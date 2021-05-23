@@ -1,5 +1,5 @@
 export FLAVOUR="RP2040"
 export VARIANTS=("WisBlock_RAK11300_Board")
-export FQBNS=("pico")
+export FQBNS=("WisCoreRAK11300Board")
 export LIBRARIES=("PDM SPI Wire MRI USBHID USBMSD ThreadDebug Scheduler")
 export BOOTLOADERS=("")
