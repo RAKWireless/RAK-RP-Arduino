@@ -1,0 +1,293 @@
+{
+	"packages": [
+		{
+			"name": "rakrp",
+			"maintainer": "RAKwireless",
+			"websiteURL": "https://RAKwireless.com",
+			"email": "inquiry@RAKwireless.com",
+			"description": "Board Support Package for RAKwireless WisBlock Core RAK11300 modules. Includes examples for all WisIO and WisSensor modules. Get more information from http://rakwireless.com",
+			"help": {
+				"online": "https://forum.rakwireless.com"
+			},
+			"platforms": [
+				{
+					"name": "RAKwireless RP Boards",
+					"architecture": "mbed_rp2040",
+					"version": "0.0.1",
+					"category": "Contributed",
+					"url": "https://github.com/RAKWireless/RAK-RP-Arduino/archive/0.0.1.tar.gz?raw=true",
+					"archiveFileName": "0.0.1.tar.gz",
+					"checksum": "SHA-256:DC1ADF3D55FE99E0A51F93BBE8626D06EFDD24751E446B874B35CD764017D774",
+					"size": "17576699",
+					"boards": [
+						{
+							"name": "RAK11300"
+						}
+					],
+					"toolsDependencies": [
+						{
+							"packager": "arduino",
+							"name": "openocd",
+							"version": "0.11.0-arduino2"
+						},
+						{
+							"packager": "arduino",
+							"name": "arm-none-eabi-gcc",
+							"version": "7-2017q4"
+						},
+						{
+							"packager": "arduino",
+							"name": "bossac",
+							"version": "1.9.1-arduino2"
+						},
+						{
+							"packager": "arduino",
+							"version": "0.10.0-arduino1",
+							"name": "dfu-util"
+						},
+						{
+							"packager": "arduino",
+							"version": "1.0.2",
+							"name": "rp2040tools"
+						}
+					]
+				}
+			],
+			"tools": [
+				{
+					"name": "openocd",
+					"version": "0.11.0-arduino2",
+					"systems": [
+						{
+							"size": "1902818",
+							"checksum": "SHA-256:a1aa7f1435a61eafb72ee90722f2496d6a34a7a0f085d0315c2613e4a548b824",
+							"host": "aarch64-linux-gnu",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-aarch64-linux-gnu.tar.bz2",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-aarch64-linux-gnu.tar.bz2"
+						},
+						{
+							"size": "1986716",
+							"checksum": "SHA-256:57041130160be086e69387cceb4616eefc9819a0ef75de1f7c11aea57fb92699",
+							"host": "arm-linux-gnueabihf",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-arm-linux-gnueabihf.tar.bz2",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-arm-linux-gnueabihf.tar.bz2"
+						},
+						{
+							"size": "1971364",
+							"checksum": "SHA-256:6f4a8b77c8076aa18afb8438472526dff8c0d161a3ca68d0326163b59fcab663",
+							"host": "i686-linux-gnu",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-i686-ubuntu12.04-linux-gnu.tar.bz2",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-i686-ubuntu12.04-linux-gnu.tar.bz2"
+						},
+						{
+							"size": "2460087",
+							"checksum": "SHA-256:631010980f12b1e750c4c67ce012b31c5953caabf4d30607d806e3d2b717d4b8",
+							"host": "i686-mingw32",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-i686-w64-mingw32.zip",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-i686-w64-mingw32.zip"
+						},
+						{
+							"size": "1893150",
+							"checksum": "SHA-256:280e7234eba84e830e92d791ebc685286f71d2bc1d3347f93605ef170d54fef4",
+							"host": "i386-apple-darwin11",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-x86_64-apple-darwin13.tar.bz2",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-x86_64-apple-darwin13.tar.bz2"
+						},
+						{
+							"size": "2052080",
+							"checksum": "SHA-256:4d19b6e3906de1434ec86841e0e3138235714c655d45f037c0fabfa5e5c0681b",
+							"host": "x86_64-linux-gnu",
+							"archiveFileName": "openocd-0.11.0-arduino2-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
+							"url": "http://downloads.arduino.cc/tools/openocd-0.11.0-arduino2-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
+						}
+					]
+				},
+				{
+					"name": "arm-none-eabi-gcc",
+					"version": "7-2017q4",
+					"systems": [
+						{
+							"host": "arm-linux-gnueabihf",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2019-q4-major-linuxarm.tar.bz2",
+							"archiveFileName": "gcc-arm-none-eabi-7-2019-q4-major-linuxarm.tar.bz2",
+							"checksum": "SHA-256:34180943d95f759c66444a40b032f7dd9159a562670fc334f049567de140c51b",
+							"size": "96613739"
+						},
+						{
+							"host": "aarch64-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2018-q2-update-linuxarm64.tar.bz2",
+							"archiveFileName": "gcc-arm-none-eabi-7-2018-q2-update-linuxarm64.tar.bz2",
+							"checksum": "SHA-256:6fb5752fb4d11012bd0a1ceb93a19d0641ff7cf29d289b3e6b86b99768e66f76",
+							"size": "99558726"
+						},
+						{
+							"host": "i686-mingw32",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2017-q4-major-win32-arduino1.zip",
+							"archiveFileName": "gcc-arm-none-eabi-7-2017-q4-major-win32-arduino1.zip",
+							"checksum": "SHA-256:96dd0091856f4d2eb21046eba571321feecf7d50b9c156f708b2a8b683903382",
+							"size": "131761924"
+						},
+						{
+							"host": "x86_64-apple-darwin",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2017-q4-major-mac.tar.bz2",
+							"archiveFileName": "gcc-arm-none-eabi-7-2017-q4-major-mac.tar.bz2",
+							"checksum": "SHA-256:89b776c7cf0591c810b5b60067e4dc113b5b71bc50084a536e71b894a97fdccb",
+							"size": "104550003"
+						},
+						{
+							"host": "x86_64-pc-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2017-q4-major-linux64.tar.bz2",
+							"archiveFileName": "gcc-arm-none-eabi-7-2017-q4-major-linux64.tar.bz2",
+							"checksum": "SHA-256:96a029e2ae130a1210eaa69e309ea40463028eab18ba19c1086e4c2dafe69a6a",
+							"size": "99857645"
+						},
+						{
+							"host": "i686-pc-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2018-q2-update-linux32.tar.bz2",
+							"archiveFileName": "gcc-arm-none-eabi-7-2018-q2-update-linux32.tar.bz2",
+							"checksum": "SHA-256:090a0bc2b1956bc49392dff924a6c30fa57c88130097b1972204d67a45ce3cf3",
+							"size": "97427309"
+						}
+					]
+				},
+				{
+					"name": "bossac",
+					"version": "1.9.1-arduino2",
+					"systems": [
+						{
+							"host": "i686-mingw32",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-windows.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-windows.tar.gz",
+							"checksum": "SHA-256:5c994d04354f0db8e4bea136f49866d2ba537f0af74b2e78026f2d4fc75e3e39",
+							"size": "1260628"
+						},
+						{
+							"host": "x86_64-apple-darwin",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-osx.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-osx.tar.gz",
+							"checksum": "SHA-256:b7732129364a378676604db6579c9b8dab50dd965fb50d7a3afff1839c97ff80",
+							"size": "47870"
+						},
+						{
+							"host": "x86_64-pc-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-linux64.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-linux64.tar.gz",
+							"checksum": "SHA-256:9eb549874391521999cee13dc823a2cfc8866b8246945339a281808d99c72d2c",
+							"size": "399532"
+						},
+						{
+							"host": "i686-pc-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-linux32.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-linux32.tar.gz",
+							"checksum": "SHA-256:10d69f53f169f25afee2dd583dfd9dc803c10543e6c5260d106725cb0d174900",
+							"size": "384951"
+						},
+						{
+							"host": "arm-linux-gnueabihf",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-linuxarm.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-linuxarm.tar.gz",
+							"checksum": "SHA-256:c9539d161d23231b5beb1d09a71829744216c7f5bc2857a491999c3e567f5b19",
+							"size": "361915"
+						},
+						{
+							"host": "aarch64-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino2-linuxaarch64.tar.gz",
+							"archiveFileName": "bossac-1.9.1-arduino2-linuxaarch64.tar.gz",
+							"checksum": "SHA-256:c167fa0ea223966f4d21f5592da3888bcbfbae385be6c5c4e41f8abff35f5cb1",
+							"size": "442853"
+						}
+					]
+				},
+				{
+					"name": "dfu-util",
+					"version": "0.8.0-stm32-arduino1",
+					"systems": [
+						{
+							"archiveFileName": "dfu-util-0.8.0-stm32-arduino1-darwin_amd64.tar.bz2",
+							"checksum": "SHA-256:bb146803a4152ce2647d72b2cde68ff95eb3017c2460f24c4db922adac1fbd12",
+							"host": "i386-apple-darwin11",
+							"size": "68381",
+							"url": "http://downloads.arduino.cc/arduino.org/dfu-util-0.8.0-stm32-arduino1-darwin_amd64.tar.bz2"
+						},
+						{
+							"archiveFileName": "dfu-util-0.8.0-stm32-arduino1-linux_arm.tar.bz2",
+							"checksum": "SHA-256:607e6b0f2d2787ed7837f26da30b100131e3db207f84b8aca94a377db6e9ae50",
+							"host": "arm-linux-gnueabihf",
+							"size": "213760",
+							"url": "http://downloads.arduino.cc/arduino.org/dfu-util-0.8.0-stm32-arduino1-linux_arm.tar.bz2"
+						},
+						{
+							"archiveFileName": "dfu-util-0.8.0-stm32-arduino1-stm32-linux_amd64.tar.bz2",
+							"checksum": "SHA-256:e44287494ebd22f59fc79766a94e20306e59c6c799f5bb1cddeed80db95000d9",
+							"host": "x86_64-linux-gnu",
+							"size": "68575",
+							"url": "http://downloads.arduino.cc/arduino.org/dfu-util-0.8.0-stm32-arduino1-linux_amd64.tar.bz2"
+						},
+						{
+							"archiveFileName": "dfu-util-0.8.0-stm32-arduino1-linux_386.tar.bz2",
+							"checksum": "SHA-256:58131e35ad5d7053b281bc6176face7b117c5ad63331e43c6801f8ccd57f59a4",
+							"host": "i686-linux-gnu",
+							"size": "69097",
+							"url": "http://downloads.arduino.cc/arduino.org/dfu-util-0.8.0-stm32-arduino1-linux_386.tar.bz2"
+						},
+						{
+							"archiveFileName": "dfu-util-0.8.0-stm32-arduino1-windows_386.tar.bz2",
+							"checksum": "SHA-256:25c2f84e1acf1f10fd2aa1afced441366d4545fd41eae56e64f0b990b4ce9f55",
+							"host": "i686-mingw32",
+							"size": "159753",
+							"url": "http://downloads.arduino.cc/arduino.org/dfu-util-0.8.0-stm32-arduino1-windows_386.tar.bz2"
+						}
+					]
+				},
+				{
+					"name": "rp2040tools",
+					"version": "1.0.2",
+					"systems": [
+						{
+							"host": "i386-apple-darwin11",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-darwin_amd64.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-darwin_amd64.tar.bz2",
+							"size": "1665895",
+							"checksum": "SHA-256:039e0ddb7a407c5c20c3ef6def8d7cc2abdc7a4fc6dcb039abb3b41c4791f69f"
+						},
+						{
+							"host": "arm-linux-gnueabihf",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-linux_arm.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-linux_arm.tar.bz2",
+							"size": "5438204",
+							"checksum": "SHA-256:8981155a50bac8c7e3621f22b8e9c87f7d6aace4e28dddb03f41d704301da94d"
+						},
+						{
+							"host": "aarch64-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-linux_arm64.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-linux_arm64.tar.bz2",
+							"size": "5650185",
+							"checksum": "SHA-256:4f102352d702fc89757c119cd46c231b998f9900956183b0f7874994dc3965d5"
+						},
+						{
+							"host": "x86_64-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-linux_amd64.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-linux_amd64.tar.bz2",
+							"size": "4180308",
+							"checksum": "SHA-256:f6faafdfdf3cb780b884fe7d092679963e95f88ea78a9ed38312c511045d15c7"
+						},
+						{
+							"host": "i686-linux-gnu",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-linux_386.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-linux_386.tar.bz2",
+							"size": "4423488",
+							"checksum": "SHA-256:9af1aaf46402ab27d60a6b5d28da5ab8807f3099d78ee6e681bf7a36911ee690"
+						},
+						{
+							"host": "i686-mingw32",
+							"url": "http://downloads.arduino.cc/tools/rp2040tools-1.0.2-windows_386.tar.bz2",
+							"archiveFileName": "rp2040tools-1.0.2-windows_386.tar.bz2",
+							"size": "2493234",
+							"checksum": "SHA-256:8aa684c431b1194d9af4958b116a0a96e4ebf6c90764f9f3420db0515dc6e2c7"
+						}
+					]
+				}
+			]
+		}
+	]
+}
