@@ -17,8 +17,8 @@
 					"category": "Contributed",
 					"url": "https://github.com/RAKWireless/RAK-RP-Arduino/archive/0.0.1.tar.gz?raw=true",
 					"archiveFileName": "0.0.1.tar.gz",
-					"checksum": "SHA-256:DC1ADF3D55FE99E0A51F93BBE8626D06EFDD24751E446B874B35CD764017D774",
-					"size": "17576699",
+					"checksum": "SHA-256:77AB7607D0F8C78C29C335E856D06388C98A0999713EF4546C2B3C592A7A529C",
+					"size": "5134508",
 					"boards": [
 						{
 							"name": "RAK11300"
