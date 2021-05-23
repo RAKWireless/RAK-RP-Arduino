@@ -20,7 +20,7 @@
    WB_A1      <->  P0.31/AIN7 (AnalogIn A7)
  */
 #include <Arduino.h>
-#include <SX126x-Arduino.h> //http://librarymanager/All#SX126x
+#include <SX126x-mbed.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
 // Function declarations
@@ -33,7 +33,7 @@ void OnRxError(void);
 #endif
 
 // Define LoRa parameters
-#define RF_FREQUENCY 916300000	// Hz
+#define RF_FREQUENCY 916000000	// Hz
 #define TX_OUTPUT_POWER 22		// dBm
 #define LORA_BANDWIDTH 0		// [0: 125 kHz, 1: 250 kHz, 2: 500 kHz, 3: Reserved]
 #define LORA_SPREADING_FACTOR 7 // [SF7..SF12]
@@ -52,9 +52,6 @@ static uint8_t RcvBuffer[64];
 void setup()
 {
 
-	// Initialize LoRa chip.
-	lora_rak11300_init();
-
 	// Initialize Serial for debug output
 	time_t timeout = millis();
 	Serial.begin(115200);
@@ -72,6 +69,12 @@ void setup()
 	Serial.println("=====================================");
 	Serial.println("LoRaP2P Rx Test");
 	Serial.println("=====================================");
+
+  // Initialize LoRa chip.
+  if (lora_rak11300_init() != 0)
+  {
+    Serial.println("lora_rak11300_init failed!");
+  }
 
 	// Initialize the Radio callbacks
 	RadioEvents.TxDone = NULL;
@@ -102,7 +105,7 @@ void loop()
 {
  // Put your application tasks here, like reading of sensors,
   // Controlling actuators and/or other functions. 
-
+yield();
 }
 
 /**@brief Function to be executed on Radio Rx Done event
