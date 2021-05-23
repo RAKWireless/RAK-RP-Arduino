@@ -26,27 +26,27 @@
 					],
 					"toolsDependencies": [
 						{
-							"packager": "arduino",
+							"packager": "rakrp",
 							"name": "openocd",
 							"version": "0.11.0-arduino2"
 						},
 						{
-							"packager": "arduino",
+							"packager": "rakrp",
 							"name": "arm-none-eabi-gcc",
 							"version": "7-2017q4"
 						},
 						{
-							"packager": "arduino",
+							"packager": "rakrp",
 							"name": "bossac",
 							"version": "1.9.1-arduino2"
 						},
 						{
-							"packager": "arduino",
+							"packager": "rakrp",
 							"version": "0.10.0-arduino1",
 							"name": "dfu-util"
 						},
 						{
-							"packager": "arduino",
+							"packager": "rakrp",
 							"version": "1.0.2",
 							"name": "rp2040tools"
 						}
