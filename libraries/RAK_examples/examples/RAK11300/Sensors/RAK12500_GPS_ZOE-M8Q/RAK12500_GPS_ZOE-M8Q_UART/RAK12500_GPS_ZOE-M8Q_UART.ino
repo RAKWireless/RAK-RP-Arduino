@@ -46,9 +46,10 @@ void setup()
     while (!Serial1);      // Wait for user to open terminal
     if(g_myGNSS.begin(Serial1) == true)
     {
-      Serial.printf("GNSS baund rate: %d \n",baud[i]);//GNSS baund rate
-      break;
-    }
+      Serial.print("GNSS baund rate: ");//GNSS baund rate
+	  Serial.println(baud[i]); //GNSS baund rate
+	  break;
+	}
     Serial1.end();
     delay(200);
   }

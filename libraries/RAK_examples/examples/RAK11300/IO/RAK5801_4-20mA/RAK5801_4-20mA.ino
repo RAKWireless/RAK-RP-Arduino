@@ -60,9 +60,13 @@ void loop()
 	 */
 	pressure = (current_sensor - 3.95) * 100 * 2.5;
 
-	Serial.printf("-------average_value------ = %d\n", voltage_ain);
-	Serial.printf("-------current_sensor------ = %f\n", current_sensor);
-	Serial.printf("-------pressure------ = %d KPa\n", pressure);
+	Serial.print("-------average_value------ = ");
+	Serial.println(voltage_ain);
+	Serial.print("-------current_sensor------ = ");
+	Serial.println(current_sensor);
+	Serial.print("-------pressure------ = ");
+	Serial.print(pressure);
+	Serial.println(" KPa");
 
 	delay(2000);
 }

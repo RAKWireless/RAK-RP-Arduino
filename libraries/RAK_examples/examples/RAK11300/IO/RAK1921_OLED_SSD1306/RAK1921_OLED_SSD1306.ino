@@ -49,7 +49,9 @@ void bme680_get()
 
 	float gas = bme.gas_resistance / 1000.0;
 
-	Serial.printf(", G= %.3f kOhms\n",gas);
+	Serial.print(", G= ");
+	Serial.print(gas);
+	Serial.println(" kOhms");
 
 	// display bme680 sensor data on OLED
 	u8g2.clearBuffer();					// clear the internal memory

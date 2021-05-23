@@ -20,7 +20,7 @@
    WB_A1      <->  P0.31/AIN7 (AnalogIn A7)
  */
 #include <Arduino.h>
-#include <SX126x-mbed.h> //http://librarymanager/All#SX126x
+#include <SX126x-Arduino.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
 // Function declarations
@@ -59,22 +59,22 @@ void setup()
 	{
 		if ((millis() - timeout) < 5000)
 		{
-            delay(100);
-        }
-        else
-        {
-            break;
-        }
+			delay(100);
+		}
+		else
+		{
+			break;
+		}
 	}
 	Serial.println("=====================================");
 	Serial.println("LoRaP2P Rx Test");
 	Serial.println("=====================================");
 
-  // Initialize LoRa chip.
-  if (lora_rak11300_init() != 0)
-  {
-    Serial.println("lora_rak11300_init failed!");
-  }
+	// Initialize LoRa chip.
+	if (lora_rak11300_init() != 0)
+	{
+		Serial.println("lora_rak11300_init failed!");
+	}
 
 	// Initialize the Radio callbacks
 	RadioEvents.TxDone = NULL;
@@ -103,9 +103,9 @@ void setup()
 
 void loop()
 {
- // Put your application tasks here, like reading of sensors,
-  // Controlling actuators and/or other functions. 
-yield();
+	// Put your application tasks here, like reading of sensors,
+	// Controlling actuators and/or other functions.
+	yield();
 }
 
 /**@brief Function to be executed on Radio Rx Done event
@@ -116,16 +116,14 @@ void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr)
 	delay(10);
 	memcpy(RcvBuffer, payload, size);
 
-//	Serial.printf("RssiValue=%d dBm, SnrValue=%d\n", rssi, snr);
-  Serial.print("RssiValue=");
-  Serial.print(rssi);
-  Serial.print(" dBm, SnrValue=");
-  Serial.println(snr);
+	Serial.print("RssiValue=");
+	Serial.print(rssi);
+	Serial.print(" dBm, SnrValue=");
+	Serial.println(snr);
 
 	for (int idx = 0; idx < size; idx++)
 	{
-//		Serial.printf("%02X ", RcvBuffer[idx]);
-    Serial.print(RcvBuffer[idx],16);
+		Serial.print(RcvBuffer[idx], 16);
 	}
 	Serial.println("");
 	Radio.Rx(RX_TIMEOUT_VALUE);

@@ -101,7 +101,7 @@ void setup()
 	digitalWrite(LED_BUILTIN, LOW);
 
 	// Initialize LoRa chip.
-	lora_rak4630_init();
+	lora_rak11300_init();
 
 	// Initialize Serial for debug output
 	time_t timeout = millis();
@@ -184,8 +184,9 @@ void setup()
 	err_code = timers_init();
 	if (err_code != 0)
 	{
-		Serial.printf("timers_init failed - %d\n", err_code);
-    return;
+		Serial.print("timers_init failed - ", err_code);
+		Serial.println(err_code);
+		return;
 	}
 
 	// Setup the EUIs and Keys
@@ -206,8 +207,9 @@ void setup()
   err_code = lmh_init(&lora_callbacks, lora_param_init, doOTAA, gCurrentClass, gCurrentRegion);
 	if (err_code != 0)
 	{
-		Serial.printf("lmh_init failed - %d\n", err_code);
-    return;
+		Serial.print("lmh_init failed - ");
+		Serial.println(err_code);
+		return;
 	}
 
 	// Start Join procedure
@@ -248,13 +250,23 @@ static void lorawan_join_failed_handler(void)
  */
 void lorawan_rx_handler(lmh_app_data_t *app_data)
 {
-	Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
-				  app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
+	Serial.print("LoRa Packet received on port ");
+	Serial.print(app_data->port);
+	Serial.print(", size:");
+	Serial.print(app_data->buffsize);
+	Serial.print(", rssi:");
+	Serial.print(app_data->rssi);
+	Serial.print(", snr:");
+	Serial.print(app_data->snr);
+	Serial.print(", data:");
+	Serial.println(app_data->buffer);
 }
 
 void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
-	Serial.printf("switch to class %c done\n", "ABC"[Class]);
+	Serial.print("switch to class ");
+	Serial.print("ABC"[Class]);
+	Serial.println(" done");
 	// Informs the server that switch has occurred ASAP
 	m_lora_app_data.buffsize = 0;
 	m_lora_app_data.port = gAppPort;
@@ -273,12 +285,14 @@ void send_lora_frame(void)
 	if (error == LMH_SUCCESS)
 	{
 		count++;
-		Serial.printf("lmh_send ok count %d\n", count);
+		Serial.print("lmh_send ok count");
+		Serial.println(count);
 	}
 	else
 	{
 		count_fail++;
-		Serial.printf("lmh_send fail count %d\n", count_fail);
+		Serial.print("lmh_send fail count ");
+		Serial.println(count_fail);
 	}
 	TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
 	TimerStart(&appTimer);

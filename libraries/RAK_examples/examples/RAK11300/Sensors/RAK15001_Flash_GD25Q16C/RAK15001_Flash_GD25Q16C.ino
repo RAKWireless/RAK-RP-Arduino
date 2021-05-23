@@ -83,11 +83,12 @@ void setup(void)
 
   g_flash.readBuffer(0, buf, sizeof(buf));    // Get content of the flash
   Serial.println("First 16 bytes before erasing Flash");
-  Serial.printf("%X %X %X %X %X %X %X %X %X %X %X %X %X %X %X %X\n",
-          buf[0], buf[1], buf[2], buf[3],
-          buf[4], buf[5], buf[6], buf[7],
-          buf[8], buf[9], buf[10], buf[11],
-          buf[12], buf[13], buf[14], buf[15]);
+  for (int idx = 0; idx < 16; idx++)
+  {
+	  Serial.print(buf[idx]);
+	  Serial.print("");
+  }
+  Serial.println(" ");
 
   Serial.println("Erase Flash");
   g_flash.eraseChip();                // Erase the Flash content
@@ -95,12 +96,13 @@ void setup(void)
 
   g_flash.readBuffer(0, buf, sizeof(buf));    // Read the content to see if erasing worked
   Serial.println("First 16 bytes after erasing Flash");
-  Serial.printf("%X %X %X %X %X %X %X %X %X %X %X %X %X %X %X %X\n",
-          buf[0], buf[1], buf[2], buf[3],
-          buf[4], buf[5], buf[6], buf[7],
-          buf[8], buf[9], buf[10], buf[11],
-          buf[12], buf[13], buf[14], buf[15]);
-          
+  for (int idx = 0; idx < 16; idx++)
+  {
+	  Serial.print(buf[idx]);
+	  Serial.print("");
+  }
+  Serial.println(" ");
+
   Serial.println("Writing ..."); 
   g_flash.writeBuffer(0, flashBuffer, sizeof(flashBuffer));  // Write new data to the Flash
   g_flash.waitUntilReady();
@@ -108,11 +110,12 @@ void setup(void)
 
   g_flash.readBuffer(0, buf, sizeof(buf));           // Read the content to see if write worked
   Serial.println("First 16 bytes after writing new content");
-  Serial.printf("%X %X %X %X %X %X %X %X %X %X %X %X %X %X %X %X\n",
-          buf[0], buf[1], buf[2], buf[3],
-          buf[4], buf[5], buf[6], buf[7],
-          buf[8], buf[9], buf[10], buf[11],
-          buf[12], buf[13], buf[14], buf[15]);
+  for (int idx = 0; idx < 16; idx++)
+  {
+	  Serial.print(buf[idx]);
+	  Serial.print("");
+  }
+  Serial.println(" ");
 }
 
 /**

@@ -62,14 +62,14 @@ void setup(void) {
      i2ceeprom.write8(g_random_addr,g_write_data);
   
      Serial.print("Random write address is: ");
-     Serial.printf("%d\n",g_random_addr);
+     Serial.println(g_random_addr);
   
      Serial.print("Random write number is: ");
-     Serial.printf("%d\n",g_write_data);
+     Serial.println(g_write_data);
   
      g_read_data = i2ceeprom.read8(g_random_addr);
      Serial.print("Read data from address is: ");   
-     Serial.printf("%d\n",g_read_data);    
+     Serial.println(g_read_data);    
      if(g_read_data == g_write_data)
      {
       Serial.println("EEPROM write and read data is OK!");   

@@ -11,9 +11,8 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#include <ArduinoModbus.h> //http://librarymanager/All#ArduinoModbus     //http://librarymanager/All#ArduinoRS485
+#include <ArduinoModbus.h>	 //http://librarymanager/All#ArduinoModbus     //http://librarymanager/All#ArduinoRS485
 #include <LoRaWan-RAK4630.h> //http://librarymanager/All#SX126x
-
 
 // RAK4630 supply two LED
 #ifndef LED_BUILTIN
@@ -24,14 +23,14 @@
 #define LED_BUILTIN2 36
 #endif
 
-bool doOTAA = true;   // OTAA is used by default.
+bool doOTAA = true;												  // OTAA is used by default.
 #define SCHED_MAX_EVENT_DATA_SIZE APP_TIMER_SCHED_EVENT_DATA_SIZE /**< Maximum size of scheduler events. */
 #define SCHED_QUEUE_SIZE 60										  /**< Maximum number of events in the scheduler queue. */
 #define LORAWAN_DATERATE DR_0									  /*LoRaMac datarates definition, from DR_0 to DR_5*/
 #define LORAWAN_TX_POWER TX_POWER_5								  /*LoRaMac tx power definition, from TX_POWER_0 to TX_POWER_15*/
 #define JOINREQ_NBTRIALS 3										  /**< Number of trials for the join request. */
 DeviceClass_t g_CurrentClass = CLASS_A;							  /* class definition*/
-LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;    /* Region:EU868*/
+LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;			  /* Region:EU868*/
 lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;				  /* confirm/unconfirm packet definition*/
 uint8_t g_AppPort = LORAWAN_APP_PORT;							  /* data port*/
 
@@ -43,8 +42,7 @@ static lmh_param_t g_lora_param_init = {
 	LORAWAN_PUBLIC_NETWORK,
 	JOINREQ_NBTRIALS,
 	LORAWAN_TX_POWER,
-	LORAWAN_DUTYCYCLE_OFF
-};
+	LORAWAN_DUTYCYCLE_OFF};
 
 // Foward declaration
 static void lorawan_has_joined_handler(void);
@@ -61,9 +59,8 @@ static lmh_callback_t g_lora_callbacks = {
 	BoardGetRandomSeed,
 	lorawan_rx_handler,
 	lorawan_has_joined_handler,
-  lorawan_confirm_class_handler,
-  lorawan_join_failed_handler
-};
+	lorawan_confirm_class_handler,
+	lorawan_join_failed_handler};
 
 //OTAA keys !!!! KEYS ARE MSB !!!!
 uint8_t nodeDeviceEUI[8] = {0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x33, 0x33};
@@ -76,8 +73,8 @@ uint8_t nodeNwsKey[16] = {0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91, 
 uint8_t nodeAppsKey[16] = {0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50, 0x7D, 0xBF, 0x16, 0x8B, 0xA8, 0xC1, 0x7C};
 
 // Private defination
-#define LORAWAN_APP_DATA_BUFF_SIZE 64										  /**< buffer size of the data to be transmitted. */
-#define LORAWAN_APP_INTERVAL 20000											  /**< Defines for user timer, the application data transmission interval. 20s, value in [ms]. */
+#define LORAWAN_APP_DATA_BUFF_SIZE 64											  /**< buffer size of the data to be transmitted. */
+#define LORAWAN_APP_INTERVAL 20000												  /**< Defines for user timer, the application data transmission interval. 20s, value in [ms]. */
 static uint8_t g_m_lora_app_data_buffer[LORAWAN_APP_DATA_BUFF_SIZE];			  //< Lora user application data buffer.
 static lmh_app_data_t g_m_lora_app_data = {g_m_lora_app_data_buffer, 0, 0, 0, 0}; //< Lora user application data structure.
 
@@ -92,7 +89,7 @@ void setup()
 	digitalWrite(LED_BUILTIN, LOW);
 
 	// Initialize LoRa chip.
-	lora_rak4630_init();
+	lora_rak11300_init();
 
 	// Init Modbus
 	if (!ModbusRTUClient.begin(9600))
@@ -119,76 +116,78 @@ void setup()
 
 	Serial.println("=====================================");
 	Serial.println("Welcome to RAK4630 LoRaWan!!!");
-  if (doOTAA)
-  {
-	Serial.println("Type: OTAA");
-  }
-  else
-  {
-    Serial.println("Type: ABP");
-  }
+	if (doOTAA)
+	{
+		Serial.println("Type: OTAA");
+	}
+	else
+	{
+		Serial.println("Type: ABP");
+	}
 
-  switch (g_CurrentRegion)
-  {
-    case LORAMAC_REGION_AS923:
-	Serial.println("Region: AS923");
-      break;
-    case LORAMAC_REGION_AU915:
-	Serial.println("Region: AU915");
-      break;
-    case LORAMAC_REGION_CN470:
-	Serial.println("Region: CN470");
-      break;
-    case LORAMAC_REGION_EU433:
-	Serial.println("Region: EU433");
-      break;
-    case LORAMAC_REGION_IN865:
-	Serial.println("Region: IN865");
-      break;
-    case LORAMAC_REGION_EU868:
-	Serial.println("Region: EU868");
-      break;
-    case LORAMAC_REGION_KR920:
-	Serial.println("Region: KR920");
-      break;
-    case LORAMAC_REGION_US915:
-	Serial.println("Region: US915");
-      break;
-  }
+	switch (g_CurrentRegion)
+	{
+	case LORAMAC_REGION_AS923:
+		Serial.println("Region: AS923");
+		break;
+	case LORAMAC_REGION_AU915:
+		Serial.println("Region: AU915");
+		break;
+	case LORAMAC_REGION_CN470:
+		Serial.println("Region: CN470");
+		break;
+	case LORAMAC_REGION_EU433:
+		Serial.println("Region: EU433");
+		break;
+	case LORAMAC_REGION_IN865:
+		Serial.println("Region: IN865");
+		break;
+	case LORAMAC_REGION_EU868:
+		Serial.println("Region: EU868");
+		break;
+	case LORAMAC_REGION_KR920:
+		Serial.println("Region: KR920");
+		break;
+	case LORAMAC_REGION_US915:
+		Serial.println("Region: US915");
+		break;
+	}
 	Serial.println("=====================================");
-  
+
 	Scheduler.startLoop(loop2);
-  
+
 	//creat a user timer to send data to server period
 	uint32_t err_code;
 
 	err_code = timers_init();
 	if (err_code != 0)
 	{
-		Serial.printf("timers_init failed - %d\n", err_code);
-    return;
+		Serial.print("timers_init failed - ", err_code);
+		Serial.println(err_code);
+		return;
 	}
 
 	// Setup the EUIs and Keys
-  if (doOTAA)
-  {
-    lmh_setDevEui(nodeDeviceEUI);
-    lmh_setAppEui(nodeAppEUI);
-    lmh_setAppKey(nodeAppKey);
-  }
-  else
-  {
-    lmh_setNwkSKey(nodeNwsKey);
-    lmh_setAppSKey(nodeAppsKey);
-    lmh_setDevAddr(nodeDevAddr);
-  }
+	if (doOTAA)
+	{
+		lmh_setDevEui(nodeDeviceEUI);
+		lmh_setAppEui(nodeAppEUI);
+		lmh_setAppKey(nodeAppKey);
+	}
+	else
+	{
+		lmh_setNwkSKey(nodeNwsKey);
+		lmh_setAppSKey(nodeAppsKey);
+		lmh_setDevAddr(nodeDevAddr);
+	}
 
 	// Initialize LoRaWan
-  err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, doOTAA, g_CurrentClass, g_CurrentRegion);
+	err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, doOTAA, g_CurrentClass, g_CurrentRegion);
 	if (err_code != 0)
 	{
-		Serial.printf("lmh_init failed - %d\n", err_code);
-    return;
+		Serial.print("lmh_init failed - ");
+		Serial.println(err_code);
+		return;
 	}
 
 	// Start Join procedure
@@ -273,12 +272,24 @@ void loop2()
 	delay(300);
 	/* RS485 Power off */
 
-	Serial.printf("-----par = %d-------\n", par);
-	Serial.printf("-----raw_ph = %d-------\n", raw_ph);
-	Serial.printf("-----raw_conductivity = %d-------\n", raw_conductivity);
-	Serial.printf("-----raw_temperature = %d-------\n", raw_temperature);
-	Serial.printf("-----raw_humidity = %d-------\n", raw_humidity);
-	Serial.printf("-----raw_wind_speed = %d-------\n", raw_wind_speed);
+	Serial.print("-----par = ");
+	Serial.print(par);
+	Serial.println("-------");
+	Serial.print("-----raw_ph = ");
+	Serial.print(raw_ph);
+	Serial.println("-------");
+	Serial.print("-----raw_conductivity = ");
+	Serial.print(raw_conductivity);
+	Serial.println("-------");
+	Serial.print("-----raw_temperature = ");
+	Serial.print(raw_temperature);
+	Serial.println("-------");
+	Serial.print("-----raw_humidity = ");
+	Serial.print(raw_humidity);
+	Serial.println("-------");
+	Serial.print("-----raw_wind_speed = ");
+	Serial.print(raw_wind_speed);
+	Serial.println("-------");
 
 	g_m_lora_app_data.port = g_AppPort;
 	g_m_lora_app_data.buffer[i++] = 0x08;
@@ -301,8 +312,8 @@ void loop2()
 
 void loop()
 {
-  // Put your application tasks here, like reading of sensors,
-  // Controlling actuators and/or other functions.
+	// Put your application tasks here, like reading of sensors,
+	// Controlling actuators and/or other functions.
 }
 
 /**@brief LoRa function for handling HasJoined event.
@@ -323,9 +334,9 @@ void lorawan_has_joined_handler(void)
 */
 static void lorawan_join_failed_handler(void)
 {
-  Serial.println("OTAA join failed!");
-  Serial.println("Check your EUI's and Keys's!");
-  Serial.println("Check if a Gateway is in range!");
+	Serial.println("OTAA join failed!");
+	Serial.println("Check your EUI's and Keys's!");
+	Serial.println("Check if a Gateway is in range!");
 }
 /**@brief Function for handling LoRaWan received data from Gateway
  *
@@ -333,13 +344,23 @@ static void lorawan_join_failed_handler(void)
  */
 void lorawan_rx_handler(lmh_app_data_t *app_data)
 {
-	Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
-				  app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
+	Serial.print("LoRa Packet received on port ");
+	Serial.print(app_data->port);
+	Serial.print(", size:");
+	Serial.print(app_data->buffsize);
+	Serial.print(", rssi:");
+	Serial.print(app_data->rssi);
+	Serial.print(", snr:");
+	Serial.print(app_data->snr);
+	Serial.print(", data:");
+	Serial.println(app_data->buffer);
 }
 
 void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
-	Serial.printf("switch to class %c done\n", "ABC"[Class]);
+	Serial.print("switch to class ");
+	Serial.print("ABC"[Class]);
+	Serial.println(" done");
 	// Informs the server that switch has occurred ASAP
 	g_m_lora_app_data.buffsize = 0;
 	g_m_lora_app_data.port = g_AppPort;
@@ -357,13 +378,15 @@ void send_lora_frame(void)
 	lmh_error_status error = lmh_send(&g_m_lora_app_data, g_CurrentConfirm);
 	if (error == LMH_SUCCESS)
 	{
-		g_count++;
-		Serial.printf("lmh_send ok count %d\n", g_count);
+		count++;
+		Serial.print("lmh_send ok count");
+		Serial.println(count);
 	}
 	else
 	{
-		g_count_fail++;
-		Serial.printf("lmh_send fail count %d\n", g_count_fail);
+		count_fail++;
+		Serial.print("lmh_send fail count ");
+		Serial.println(count_fail);
 	}
 	TimerSetValue(&g_appTimer, LORAWAN_APP_INTERVAL);
 	TimerStart(&g_appTimer);

@@ -60,9 +60,13 @@ void loop()
 
 	depths = (voltage_sensor * 1000 - 574) * 2.5; 	//Convert to millivolt. 574mv is the default output from sensor
 
-	Serial.printf("-------average_value------ = %d\n", average_raw);
-	Serial.printf("-------voltage_sensor------ = %f\n", voltage_sensor);
-	Serial.printf("-------depths------ = %d mm\n", depths);
+	Serial.print("-------average_value------ = ");
+	Serial.println(average_raw);
+	Serial.print("-------voltage_sensor------ = ");
+	Serial.println(voltage_sensor);
+	Serial.print("-------depths------ = ");
+	Serial.print(depths);
+	Serial.println(" mm");
 
 	delay(2000);
 }

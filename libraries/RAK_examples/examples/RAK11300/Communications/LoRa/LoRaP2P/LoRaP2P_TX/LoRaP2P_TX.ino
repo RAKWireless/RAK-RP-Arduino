@@ -52,7 +52,7 @@ void setup()
 {
 
 	// Initialize LoRa chip.
-	lora_rak4630_init();
+	lora_rak11300_init();
 
 	// Initialize Serial for debug output
 	time_t timeout = millis();

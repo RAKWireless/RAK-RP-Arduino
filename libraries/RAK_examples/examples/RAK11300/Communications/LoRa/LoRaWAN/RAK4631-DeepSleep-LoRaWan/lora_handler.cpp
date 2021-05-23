@@ -114,7 +114,7 @@ int8_t initLoRaWan(void)
 	xSemaphoreGive(loraEvent);
 
 	// Initialize LoRa chip.
-	if (lora_rak4630_init() != 0)
+	if (lora_rak11300_init() != 0)
 	{
 		return -1;
 	}
@@ -202,7 +202,8 @@ static void lorawan_has_joined_handler(void)
 	{
 		uint32_t otaaDevAddr = lmh_getDevAddr();
 #ifndef MAX_SAVE
-		Serial.printf("OTAA joined and got dev address %08X\n", otaaDevAddr);
+		Serial.print("OTAA joined and got dev address ");
+		Serial.println(otaaDevAddr,16);
 #endif
 	}
 	else
@@ -237,8 +238,14 @@ static void lorawan_join_failed_handler(void)
 static void lorawan_rx_handler(lmh_app_data_t *app_data)
 {
 #ifndef MAX_SAVE
-	Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d\n",
-				  app_data->port, app_data->buffsize, app_data->rssi, app_data->snr);
+	Serial.print("LoRa Packet received on port ");
+	Serial.print(app_data->port);
+	Serial.print(", size:");
+	Serial.print(app_data->buffsize);
+	Serial.print(", rssi:");
+	Serial.print(app_data->rssi);
+	Serial.print(", snr:");
+	Serial.println(app_data->snr);
 #endif
 	switch (app_data->port)
 	{
@@ -304,7 +311,9 @@ static void lorawan_rx_handler(lmh_app_data_t *app_data)
 static void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
 #ifndef MAX_SAVE
-	Serial.printf("switch to class %c done\n", "ABC"[Class]);
+	Serial.print("switch to class ");
+	Serial.print("ABC"[Class]);
+	Serial.println(" done");
 #endif
 
 	// Informs the server that switch has occurred ASAP
