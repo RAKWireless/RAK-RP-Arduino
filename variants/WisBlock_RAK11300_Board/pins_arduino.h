@@ -9,6 +9,10 @@
 extern "C" unsigned int PINCOUNT_fn();
 #endif
 
+
+#define F_CPU 64000000U			//this is a debug marco for RAK15001
+static const uint8_t A5 = -1;	//this is a debug marco for RAK5802 
+static const uint8_t A6 = -1;	//this is a debug marco for RAK5802 
 // Pin count
 // ----
 #define PINS_COUNT           (PINCOUNT_fn())
@@ -28,7 +32,7 @@ static const uint8_t WB_A0 = 26;		   // IO_SLOT
 static const uint8_t WB_A1 = 27;	   // IO_SLOT
 
 // LEDs
-#define PIN_LED1 (25)
+#define PIN_LED1 (23)
 #define PIN_LED2 (24)
 
 #define LED_BUILTIN PIN_LED1
@@ -52,9 +56,11 @@ static const uint8_t A3  = PIN_A3;
 #define ADC_RESOLUTION 12
 
 // Serial
-#define PIN_SERIAL_TX (0ul)
-#define PIN_SERIAL_RX (1ul)
+#define PIN_SERIAL1_TX (0ul)
+#define PIN_SERIAL1_RX (1ul)
 
+#define PIN_SERIAL2_RX      (5ul)
+#define PIN_SERIAL2_TX      (4ul)
 
 // SPI
 #define PIN_SPI_MISO  (16u)
@@ -68,18 +74,32 @@ static const uint8_t MISO = PIN_SPI_MISO;
 static const uint8_t SCK  = PIN_SPI_SCK;
 
 // Wire
-#define PIN_WIRE_SDA        (20u)
-#define PIN_WIRE_SCL        (21u)
+// #define WIRE_HOWMANY        2
+#define PIN_WIRE_SDA        (2u)
+#define PIN_WIRE_SCL        (3u)
 
-#define SERIAL_HOWMANY		1
-#define SERIAL1_TX			(digitalPinToPinName(PIN_SERIAL_TX))
-#define SERIAL1_RX			(digitalPinToPinName(PIN_SERIAL_RX))
+// #define I2C_SDA        PIN_WIRE_SDA
+// #define I2C_SCL        PIN_WIRE_SCL
+
+#define PIN_WIRE_SDA1        (20u)
+#define PIN_WIRE_SCL1        (21u)
+
+// #define I2C_SDA1        PIN_WIRE_SDA1
+// #define I2C_SCL1        PIN_WIRE_SCL1
+
+#define SERIAL_HOWMANY		2
+#define SERIAL1_TX			(digitalPinToPinName(PIN_SERIAL1_TX))
+#define SERIAL1_RX			(digitalPinToPinName(PIN_SERIAL1_RX))
+
+#define SERIAL2_TX			(digitalPinToPinName(PIN_SERIAL2_TX))
+#define SERIAL2_RX			(digitalPinToPinName(PIN_SERIAL2_RX))
+
 
 #define SERIAL_CDC			1
 #define HAS_UNIQUE_ISERIAL_DESCRIPTOR
 #define BOARD_VENDORID		0x2e8a
 #define BOARD_PRODUCTID		0x00c0
-#define BOARD_NAME			"RaspberryPi Pico"
+#define BOARD_NAME			"WisBlock RAK11300 Board"
 
 uint8_t getUniqueSerialNumber(uint8_t* name);
 void _ontouch1200bps_();
@@ -89,9 +109,11 @@ void _ontouch1200bps_();
 #define SPI_MOSI		(digitalPinToPinName(PIN_SPI_MOSI))
 #define SPI_SCK			(digitalPinToPinName(PIN_SPI_SCK))
 
-#define WIRE_HOWMANY	(1)
+#define WIRE_HOWMANY	(2)
 #define I2C_SDA			(digitalPinToPinName(PIN_WIRE_SDA))
 #define I2C_SCL			(digitalPinToPinName(PIN_WIRE_SCL))
+#define I2C_SDA1			(digitalPinToPinName(PIN_WIRE_SDA1))
+#define I2C_SCL1			(digitalPinToPinName(PIN_WIRE_SCL1))
 
 #define digitalPinToPort(P)		(digitalPinToPinName(P)/32)
 

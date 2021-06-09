@@ -161,8 +161,7 @@ void setup()
 	err_code = timers_init();
 	if (err_code != 0)
 	{
-		Serial.print("timers_init failed - ", err_code);
-		Serial.println(err_code);
+    Serial.printf("timers_init failed - %d\n", err_code);
 		return;
 	}
 
@@ -184,8 +183,7 @@ void setup()
 	err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, doOTAA, g_CurrentClass, g_CurrentRegion);
 	if (err_code != 0)
 	{
-		Serial.print("lmh_init failed - ");
-		Serial.println(err_code);
+    Serial.printf("lmh_init failed - %d\n", err_code);
 		return;
 	}
 
@@ -228,23 +226,13 @@ static void lorawan_join_failed_handler(void)
 */
 void lorawan_rx_handler(lmh_app_data_t *app_data)
 {
-	Serial.print("LoRa Packet received on port ");
-	Serial.print(app_data->port);
-	Serial.print(", size:");
-	Serial.print(app_data->buffsize);
-	Serial.print(", rssi:");
-	Serial.print(app_data->rssi);
-	Serial.print(", snr:");
-	Serial.print(app_data->snr);
-	Serial.print(", data:");
-	Serial.println(app_data->buffer);
+  Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
+          app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
 }
 
 void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
-	Serial.print("switch to class ");
-	Serial.print("ABC"[Class]);
-	Serial.println(" done");
+  Serial.printf("switch to class %c done\n", "ABC"[Class]);
 	// Informs the server that switch has occurred ASAP
 	g_m_lora_app_data.buffsize = 0;
 	g_m_lora_app_data.port = g_AppPort;
@@ -274,9 +262,7 @@ int get_depths(void)
 
 	depths = (voltage_sensor * 1000 - 574) * 2.5; //Convert to millivolt. 574mv is the default output from sensor
 
-	Serial.print("-------depths------ = ");
-	Serial.print(depths);
-	Serial.println(" mm");
+  Serial.printf("-------depths------ = %d mm\n", depths);
 	return depths;
 }
 
@@ -303,15 +289,13 @@ void send_lora_frame(void)
 	lmh_error_status error = lmh_send(&g_m_lora_app_data, g_CurrentConfirm);
 	if (error == LMH_SUCCESS)
 	{
-		count++;
-		Serial.print("lmh_send ok count");
-		Serial.println(count);
+    g_count++;
+    Serial.printf("lmh_send ok count %d\n", g_count);
 	}
 	else
 	{
-		count_fail++;
-		Serial.print("lmh_send fail count ");
-		Serial.println(count_fail);
+    g_count_fail++;
+    Serial.printf("lmh_send fail count %d\n", g_count_fail);
 	}
 }
 

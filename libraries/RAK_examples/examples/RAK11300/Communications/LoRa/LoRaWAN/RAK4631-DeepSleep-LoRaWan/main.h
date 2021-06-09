@@ -11,7 +11,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#include <LoRaWan-RAK4630.h>
+#include <LoRaWan-RAK11300.h>
 
 // Comment the next line if you want DEBUG output. But the power savings are not as good then!!!!!!!
 #define MAX_SAVE

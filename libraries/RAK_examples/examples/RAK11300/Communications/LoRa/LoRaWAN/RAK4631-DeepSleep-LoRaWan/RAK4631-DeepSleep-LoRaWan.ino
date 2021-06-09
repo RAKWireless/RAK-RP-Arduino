@@ -170,7 +170,7 @@ void loop(void)
 			if (rcvdLoRaData[0] > 0x1F)
 			{
 #ifndef MAX_SAVE
-				Serial.println((char *)rcvdLoRaData);
+				Serial.printf("%s\n", (char *)rcvdLoRaData);
 #endif
 			}
 			else
@@ -178,7 +178,7 @@ void loop(void)
 #ifndef MAX_SAVE
 				for (int idx = 0; idx < rcvdDataLen; idx++)
 				{
-					Serial.print(rcvdLoRaData[idx],16);
+					Serial.printf("%X ", rcvdLoRaData[idx]);
 				}
 				Serial.println("");
 #endif

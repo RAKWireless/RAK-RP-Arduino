@@ -163,8 +163,7 @@ void setup()
 	err_code = timers_init();
 	if (err_code != 0)
 	{
-		Serial.print("timers_init failed - ", err_code);
-		Serial.println(err_code);
+    Serial.printf("timers_init failed - %d\n", err_code);
 		return;
 	}
 
@@ -186,8 +185,7 @@ void setup()
 	err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, doOTAA, g_CurrentClass, g_CurrentRegion);
 	if (err_code != 0)
 	{
-		Serial.print("lmh_init failed - ");
-		Serial.println(err_code);
+    Serial.printf("lmh_init failed - %d\n", err_code);
 		return;
 	}
 
@@ -201,9 +199,7 @@ void loop2()
 	uint32_t i = 0;
 
 	raw_ph = get_ph();
-	Serial.print("-----raw_ph = 0x");
-	Serial.print(raw_ph);
-	Serial.println("-----");
+  Serial.printf("-----raw_ph = 0x%x-----\n", raw_ph);
 	g_m_lora_app_data.port = g_AppPort;
 	g_m_lora_app_data.buffer[i++] = 0x05;
 	g_m_lora_app_data.buffer[i++] = (raw_ph >> 8) & 0x00FF;
@@ -247,23 +243,13 @@ static void lorawan_join_failed_handler(void)
  */
 void lorawan_rx_handler(lmh_app_data_t *app_data)
 {
-	Serial.print("LoRa Packet received on port ");
-	Serial.print(app_data->port);
-	Serial.print(", size:");
-	Serial.print(app_data->buffsize);
-	Serial.print(", rssi:");
-	Serial.print(app_data->rssi);
-	Serial.print(", snr:");
-	Serial.print(app_data->snr);
-	Serial.print(", data:");
-	Serial.println(app_data->buffer);
+  Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
+          app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
 }
 
 void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
-	Serial.print("switch to class ");
-	Serial.print("ABC"[Class]);
-	Serial.println(" done");
+  Serial.printf("switch to class %c done\n", "ABC"[Class]);
 	// Informs the server that switch has occurred ASAP
 	g_m_lora_app_data.buffsize = 0;
 	g_m_lora_app_data.port = g_AppPort;
@@ -281,15 +267,13 @@ void send_lora_frame(void)
 	lmh_error_status error = lmh_send(&g_m_lora_app_data, g_CurrentConfirm);
 	if (error == LMH_SUCCESS)
 	{
-		count++;
-		Serial.print("lmh_send ok count");
-		Serial.println(count);
+    g_count++;
+    Serial.printf("lmh_send ok count %d\n", g_count);
 	}
 	else
 	{
-		count_fail++;
-		Serial.print("lmh_send fail count ");
-		Serial.println(count_fail);
+    g_count_fail++;
+    Serial.printf("lmh_send fail count %d\n", g_count_fail);
 	}
 	TimerSetValue(&g_appTimer, LORAWAN_APP_INTERVAL);
 	TimerStart(&g_appTimer);
@@ -321,8 +305,7 @@ unsigned short get_ph(void)
 		// To get the ph reading as a percentage, divide the raw value by 100.00.
 		ph = rawph / 100.00;
 		ph = (int)(ph / 0.01) * 0.01;
-		Serial.print("-------ph------ = ");
-		Serial.println(ph);
+    Serial.printf("-------ph------ = %02f\n", ph);
 	}
 
 	/* RS485 Power Off */

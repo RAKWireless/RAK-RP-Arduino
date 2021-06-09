@@ -17,6 +17,7 @@
 */
 
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -233,6 +234,20 @@ size_t Print::println(const Printable& x)
   size_t n = print(x);
   n += println();
   return n;
+}
+
+size_t Print::printf(const char * format, ...)
+{
+  char buf[256];
+  int len;
+
+  va_list ap;
+  va_start(ap, format);
+
+  len = vsnprintf(buf, 256, format, ap);
+  write(buf, len);
+  va_end(ap);
+  return len;
 }
 
 // Private Methods /////////////////////////////////////////////////////////////

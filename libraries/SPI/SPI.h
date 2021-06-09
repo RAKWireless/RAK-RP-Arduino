@@ -23,6 +23,7 @@
 
 typedef struct _mbed_spi mbed_spi;
 
+extern int SPI_CLOCK_DIV4;
 namespace arduino {
 
 class MbedSPI : public SPIClass
@@ -39,7 +40,9 @@ public:
     virtual void notUsingInterrupt(int interruptNumber);
     virtual void beginTransaction(SPISettings settings);
     virtual void endTransaction(void);
-
+    virtual void setClockDivider(int div);
+    virtual void setBitOrder(int bit);
+    virtual void setDataMode(int mode);
     // SPI Configuration methods
     virtual void attachInterrupt();
     virtual void detachInterrupt();

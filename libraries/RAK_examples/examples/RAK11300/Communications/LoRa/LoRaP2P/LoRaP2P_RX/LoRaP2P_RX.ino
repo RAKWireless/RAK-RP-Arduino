@@ -116,14 +116,11 @@ void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr)
 	delay(10);
 	memcpy(RcvBuffer, payload, size);
 
-	Serial.print("RssiValue=");
-	Serial.print(rssi);
-	Serial.print(" dBm, SnrValue=");
-	Serial.println(snr);
+	Serial.printf("RssiValue=%d dBm, SnrValue=%d\n", rssi, snr);
 
 	for (int idx = 0; idx < size; idx++)
 	{
-		Serial.print(RcvBuffer[idx], 16);
+		Serial.printf("%02X ", RcvBuffer[idx]);
 	}
 	Serial.println("");
 	Radio.Rx(RX_TIMEOUT_VALUE);

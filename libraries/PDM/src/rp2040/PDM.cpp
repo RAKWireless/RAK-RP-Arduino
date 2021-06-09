@@ -12,6 +12,8 @@ extern "C" {
 
 #include "pdm.pio.h"
 
+#define PIN_PDM_DIN 7
+#define PIN_PDM_CLK 28
 // Hardware peripherals used
 uint dmaChannel = 0;
 PIO pio = pio0;

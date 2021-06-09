@@ -32,7 +32,7 @@ struct _mbed_spi {
   mbed::SPI* obj;
 };
 
-
+int SPI_CLOCK_DIV4;
 arduino::MbedSPI::MbedSPI(int miso, int mosi, int sck) :
   _miso(digitalPinToPinName(miso)), _mosi(digitalPinToPinName(mosi)), _sck(digitalPinToPinName(sck)) {
 
@@ -74,6 +74,9 @@ void arduino::MbedSPI::usingInterrupt(int interruptNumber) {
 void arduino::MbedSPI::notUsingInterrupt(int interruptNumber) {
 
 }
+void arduino::MbedSPI::setClockDivider(int div){}
+void arduino::MbedSPI::setBitOrder(int bit){}
+void arduino::MbedSPI::setDataMode(int mode){}
 
 void arduino::MbedSPI::beginTransaction(SPISettings settings) {
     if (settings != this->settings) {
