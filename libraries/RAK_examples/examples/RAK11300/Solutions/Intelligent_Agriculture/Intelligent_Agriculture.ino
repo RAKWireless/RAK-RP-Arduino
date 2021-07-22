@@ -19,7 +19,7 @@
 using namespace std::chrono_literals;
 using namespace std::chrono;
 #include <ArduinoModbus.h> //http://librarymanager/All#ArduinoModbus     //http://librarymanager/All#ArduinoRS485
-#include <LoRaWan-RAK4630.h> //http://librarymanager/All#SX126x
+#include <LoRaWan-Arduino.h> //http://librarymanager/All#SX126x
 
 
 
