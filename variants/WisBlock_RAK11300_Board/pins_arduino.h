@@ -5,6 +5,10 @@
 #ifndef __PINS_ARDUINO__
 #define __PINS_ARDUINO__
 
+#ifndef _VARIANT_RAK11300_
+#define _VARIANT_RAK11300_
+#endif
+
 #ifdef __cplusplus
 extern "C" unsigned int PINCOUNT_fn();
 #endif
