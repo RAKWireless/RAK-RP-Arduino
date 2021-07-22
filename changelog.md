@@ -1,6 +1,9 @@
 
 # RAKwireless RAK11300 BSP Changelog
 
+## 0.0.4 = 2021.07.22
+- Update to V2.3.1 of ArduinoCore-mbed
+
 ## 0.0.3 - 2021.06.09
 - Add Serial.printf
 - Correct arduino_pins.h
