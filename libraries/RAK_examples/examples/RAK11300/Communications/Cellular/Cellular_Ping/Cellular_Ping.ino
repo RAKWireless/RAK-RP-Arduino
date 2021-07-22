@@ -8,6 +8,8 @@
 **/
 
 
+#include "SPI.h"
+
 #define BG77_POWER_KEY WB_IO1
 String bg77_rsp = "";
 

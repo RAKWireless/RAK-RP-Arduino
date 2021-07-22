@@ -11,6 +11,8 @@
 
 #define NO_OF_SAMPLES 32
 
+#define ADC0  WB_A1
+
 void setup()
 {
 	time_t timeout = millis();
@@ -32,9 +34,9 @@ void setup()
 	digitalWrite(WB_IO1, HIGH);
 	/* WisBLOCK 5811 Power On*/
 
-	pinMode(WB_A1, INPUT_PULLDOWN);
-	analogReference(AR_INTERNAL_3_0);
-	analogOversampling(128);
+	pinMode(ADC0, INPUT_PULLDOWN);
+	analogWriteResolution(12);
+
 }
 
 void loop()
@@ -50,23 +52,19 @@ void loop()
 
 	for (i = 0; i < NO_OF_SAMPLES; i++)
 	{
-		mcu_ain_raw += analogRead(WB_A1);				// the input pin A1 for the potentiometer
+		mcu_ain_raw += analogRead(ADC0);				// the input pin A1 for the potentiometer
 	}
-	average_raw = mcu_ain_raw / i;
+	average_raw = mcu_ain_raw / NO_OF_SAMPLES;
 
-	mcu_ain_voltage = average_raw * 3.0 / 1024; 	//raef 3.0V / 10bit ADC
+	mcu_ain_voltage = average_raw * 3.3 / 4095; 	//raef 3.3V / 12bit ADC
 
 	voltage_sensor = mcu_ain_voltage / 0.6; 		//WisBlock RAK5811 (0 ~ 5V).   Input signal reduced to 6/10 and output
 
 	depths = (voltage_sensor * 1000 - 574) * 2.5; 	//Convert to millivolt. 574mv is the default output from sensor
 
-	Serial.print("-------average_value------ = ");
-	Serial.println(average_raw);
-	Serial.print("-------voltage_sensor------ = ");
-	Serial.println(voltage_sensor);
-	Serial.print("-------depths------ = ");
-	Serial.print(depths);
-	Serial.println(" mm");
+	Serial.printf("-------average_value------ = %d\n", average_raw);
+	Serial.printf("-------voltage_sensor------ = %f\n", voltage_sensor);
+	Serial.printf("-------depths------ = %d mm\n", depths);
 
 	delay(2000);
 }

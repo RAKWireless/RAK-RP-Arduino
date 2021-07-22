@@ -7,6 +7,8 @@
    @copyright Copyright (c) 2020
 **/
 
+#include "SPI.h"
+
 #define BG77_POWER_KEY WB_IO1
 
 void setup()
