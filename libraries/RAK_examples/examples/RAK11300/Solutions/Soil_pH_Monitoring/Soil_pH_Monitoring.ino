@@ -7,10 +7,6 @@
  * @date 2020-07-28 
  * @copyright Copyright (c) 2020
  */
-#include <ArduinoModbus.h> //Click here to get the library: http://librarymanager/All#ArduinoModbus
-
-#include <ArduinoRS485.h> //Click here to get the library: http://librarymanager/All#ArduinoRS485
-
 #include <Arduino.h>
 #include "LoRaWan-Arduino.h" //http://librarymanager/All#SX126x
 #include <SPI.h>
@@ -19,7 +15,17 @@
 
 #include "mbed.h"
 #include "rtos.h"
+#include <ModbusRTU.h>  //http://librarymanager/All#modbus-esp8266
 
+ModbusRTU mb;
+uint16_t coils[20];
+
+bool cbWrite(Modbus::ResultCode event, uint16_t transactionId, void* data) 
+{
+  Serial.print("Request result: 0x");
+  Serial.print(event, HEX);  
+  return true;
+}
 using namespace std::chrono_literals;
 using namespace std::chrono;
 
@@ -111,12 +117,11 @@ void setup()
   Serial.println("=====================================");
   Serial.println("Welcome to RAK11300 LoRaWan!!!");
 
-  if (!ModbusRTUClient.begin(9600))
-  {
-    Serial.println("Failed to start Modbus RTU Client!");
-    while (1)
-      ;
-  }
+  //  Init Modbus
+  Serial1.begin(9600, SERIAL_8N1);
+  mb.begin(&Serial1);
+  mb.setBaudrate(9600);
+  mb.master();
   
   if (doOTAA)
   {
@@ -311,25 +316,18 @@ unsigned short get_ph(void)
   digitalWrite(WB_IO2, HIGH);
   delay(100);
   /* RS485 Power On */
-
-  if (!ModbusRTUClient.requestFrom(1, HOLDING_REGISTERS, 0x0006, 1))
-  {
-    Serial.print("failed to read registers! ");
-    Serial.println(ModbusRTUClient.lastError());
-  }
-  else
-  {
-    // If the request succeeds, the sensor sends the readings, that are
-    // stored in the holding registers. The read() method can be used to
-    // get the par values.
-    rawph = ModbusRTUClient.read();
-
-    // To get the ph reading as a percentage, divide the raw value by 100.00.
+ if (!mb.slave()) 
+ {
+   rawph = mb.readHreg(1, 0x0006, coils, 1, cbWrite);
+   // To get the ph reading as a percentage, divide the raw value by 100.00.
     ph = rawph / 100.00;
     ph = (int)(ph / 0.01) * 0.01;
     Serial.printf("-------ph------ = %02f\n", ph);
+ }
+ else
+  {
+    Serial.print("failed to read registers! ModBus error!"); 
   }
-
   /* RS485 Power Off */
   pinMode(WB_IO2, OUTPUT);
   digitalWrite(WB_IO2, LOW);

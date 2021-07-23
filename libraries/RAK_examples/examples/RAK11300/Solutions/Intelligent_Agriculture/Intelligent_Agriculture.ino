@@ -15,11 +15,20 @@
 
 #include "mbed.h"
 #include "rtos.h"
+#include <ModbusRTU.h>  //http://librarymanager/All#modbus-esp8266
+
+ModbusRTU mb;
+uint16_t coils[20];
+
+bool cbWrite(Modbus::ResultCode event, uint16_t transactionId, void* data) 
+{
+  Serial.print("Request result: 0x");
+  Serial.print(event, HEX);  
+  return true;
+}
 
 using namespace std::chrono_literals;
 using namespace std::chrono;
-#include <ArduinoModbus.h> //http://librarymanager/All#ArduinoModbus     //http://librarymanager/All#ArduinoRS485
-#include <LoRaWan-Arduino.h> //http://librarymanager/All#SX126x
 
 
 
@@ -108,13 +117,12 @@ void setup()
   // Initialize LoRa chip.
   lora_rak11300_init();
 
-  // Init Modbus
-  if (!ModbusRTUClient.begin(9600))
-  {
-    Serial.println("Failed to start Modbus RTU Client!");
-    while (1)
-      ;
-  }
+//  Init Modbus
+  Serial1.begin(9600, SERIAL_8N1);
+  mb.begin(&Serial1);
+  mb.setBaudrate(9600);
+  mb.master();
+
   Serial.println("=====================================");
   Serial.println("Welcome to RAK11300 LoRaWan!!!");
   if (doOTAA)
@@ -210,18 +218,15 @@ static unsigned short read_reg(int device_address, int reg_address)
 {
   unsigned short reg_value;
 
-  if (!ModbusRTUClient.requestFrom(device_address, HOLDING_REGISTERS, reg_address, 1))
-  {
-    Serial.print("failed to read registers! ");
-    Serial.println(ModbusRTUClient.lastError());
-  }
-  else
-  {
-    // If the request succeeds, the sensor sends the readings, that are
-    // stored in the holding registers. The read() method can be used to
-    // get the raw humidity temperature values.
-    reg_value = ModbusRTUClient.read();
-  }
+ if (!mb.slave()) 
+ {
+   reg_value = mb.readHreg(device_address, reg_address, coils, 1, cbWrite);
+   Serial.printf("ReadSensor from modbus is:%d\r\n",reg_value);
+ }
+ else
+ {
+   Serial.print("failed to read registers! ModBus error!"); 
+ } 
   return reg_value;
 }
 
@@ -315,6 +320,9 @@ void loop()
   // Put your application tasks here, like reading of sensors,
   // Controlling actuators and/or other functions.
   loop2();
+  
+  mb.task();
+  yield();
 }
 
 /**@brief LoRa function for handling HasJoined event.

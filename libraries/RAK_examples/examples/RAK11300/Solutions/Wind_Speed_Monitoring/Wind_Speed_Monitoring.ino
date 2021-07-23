@@ -8,7 +8,6 @@
  * @copyright Copyright (c) 2020
  */
 #include <Arduino.h>
-#include <ArduinoModbus.h>   //Click here to get the library: http://librarymanager/All#ArduinoModbus
 #include "LoRaWan-Arduino.h" //http://librarymanager/All#SX126x
 #include <SPI.h>
 
@@ -16,7 +15,17 @@
 
 #include "mbed.h"
 #include "rtos.h"
+#include <ModbusRTU.h>  //http://librarymanager/All#modbus-esp8266
 
+ModbusRTU mb;
+uint16_t coils[20];
+
+bool cbWrite(Modbus::ResultCode event, uint16_t transactionId, void* data) 
+{
+  Serial.print("Request result: 0x");
+  Serial.print(event, HEX);  
+  return true;
+}
 using namespace std::chrono_literals;
 using namespace std::chrono;
 
@@ -161,12 +170,11 @@ switch (g_CurrentRegion)
   }
   Serial.println("=====================================");
 
-  if (!ModbusRTUClient.begin(9600))
-  {
-    Serial.println("Failed to start Modbus RTU Client!");
-    while (1)
-      ;
-  }
+  //  Init Modbus
+  Serial1.begin(9600, SERIAL_8N1);
+  mb.begin(&Serial1);
+  mb.setBaudrate(9600);
+  mb.master();
 
   //creat a user timer to send data to server period
   uint32_t err_code;
@@ -286,22 +294,15 @@ short get_speed(void)
   digitalWrite(WB_IO2, HIGH);
   delay(100);
   /* RS485 Power On */
-
-  if (!ModbusRTUClient.requestFrom(1, HOLDING_REGISTERS, 0x0016, 1))
+ if (!mb.slave()) 
+ {
+   rawspeed = mb.readHreg(1, 0x0016, coils, 1, cbWrite);
+   speed = rawspeed / 10.0;
+   Serial.printf("-------speed------ = %f\n", speed);
+ }
+ else
   {
-    Serial.print("failed to read registers! ");
-    Serial.println(ModbusRTUClient.lastError());
-  }
-  else
-  {
-    // If the request succeeds, the sensor sends the readings, that are
-    // stored in the holding registers. The read() method can be used to
-    // get the raw pH values.
-    rawspeed = ModbusRTUClient.read();
-
-    // To get the ph reading as a percentage, divide the raw value by 10.0.
-    speed = rawspeed / 10.0;
-    Serial.printf("-------speed------ = %f\n", speed);
+    Serial.print("failed to read registers! ModBus error!"); 
   }
 
   /* RS485 Power Off */

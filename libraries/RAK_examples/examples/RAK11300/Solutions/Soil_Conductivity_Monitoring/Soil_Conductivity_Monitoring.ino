@@ -15,9 +15,17 @@
 
 #include "mbed.h"
 #include "rtos.h"
+#include <ModbusRTU.h>  //http://librarymanager/All#modbus-esp8266
 
-#include <ArduinoRS485.h>  //Click here to get the library: http://librarymanager/All#ArduinoRS485
-#include <ArduinoModbus.h> //Click here to get the library: http://librarymanager/All#ArduinoModbus
+ModbusRTU mb;
+uint16_t coils[20];
+
+bool cbWrite(Modbus::ResultCode event, uint16_t transactionId, void* data) 
+{
+  Serial.print("Request result: 0x");
+  Serial.print(event, HEX);  
+  return true;
+}
 
 using namespace std::chrono_literals;
 using namespace std::chrono;
@@ -163,12 +171,11 @@ void setup()
   }
   Serial.println("=====================================");
 
-  if (!ModbusRTUClient.begin(9600))
-  {
-    Serial.println("Failed to start Modbus RTU Client!");
-    while (1)
-      ;
-  }
+  //  Init Modbus
+  Serial1.begin(9600, SERIAL_8N1);
+  mb.begin(&Serial1);
+  mb.setBaudrate(9600);
+  mb.master();
  
   //creat a user timer to send data to server period
   uint32_t err_code;
@@ -305,18 +312,18 @@ static short read_reg(int reg_address)
 {
   short reg_value;
 
-  if (!ModbusRTUClient.requestFrom(1, HOLDING_REGISTERS, reg_address, 1))
-  {
-    Serial.print("failed to read registers! ");
-    Serial.println(ModbusRTUClient.lastError());
-  }
-  else
-  {
-    // If the request succeeds, the sensor sends the readings, that are
+ if (!mb.slave()) 
+ {
+  // If the request succeeds, the sensor sends the readings, that are
     // stored in the holding registers. The read() method can be used to
     // get the raw humidity temperature values.
-    reg_value = ModbusRTUClient.read();
-  }
+   reg_value = mb.readHreg(1, reg_address, coils, 1, cbWrite);
+   Serial.printf("ReadSensor from modbus is:%d\r\n",reg_value);
+ }
+ else
+ {
+    Serial.printf("modbus is error%d\r\n");
+ }
   return reg_value;
 }
 
