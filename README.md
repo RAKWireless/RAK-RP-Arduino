@@ -1,9 +1,9 @@
 <img src="./assets/RAK.png" alt="Modules" width="150"> <img src="./assets/rakstar.jpg" alt="Modules" width="100"> [![Build Status](https://github.com/RAKWireless/RAK-RP-Arduino/workflows/RAK%20BSP%20Arduino%20Build%20CI/badge.svg)](https://github.com/RAKWireless/RAK-RP-Arduino/actions)
 
-# Arduino Core for WisBlock Core RAK11300 modules
+# Arduino BSP for WisBlock Core RAK11300 modules
 
 This repository contains the Arduino BSP for WisBlock Core modules:
-- [RAK11300](https://www.rakwireless.com)
+- [RAK11300](https://store.rakwireless.com/collections/wisblock-core)
 
 ## What is WisBlock?
 WisBlock is an amazing product built by the RAK company for IoT industry. It can build circuits like clicking blocks together to quickly to realize your idea. Checkout [Overview](#overview) for information or visit our [documentation center](https://docs.rakwireless.com/Product-Categories/WisBlock/)     
@@ -32,8 +32,7 @@ To buy WisBlock modules please visit our [online store](https://store.rakwireles
 
 ### Description
 
-**WisBlock** is a modular system that makes it easy to implement a low power wide area network (LPWAN) into your IoT solution.
-WisBlock is going with your solution from rapid prototyping to mass production without the need to create new hardware modules for each step.
+**WisBlock** is a modular system that makes it easy to implement a low power wide area network (LPWAN) into your IoT solution. WisBlock is going with your solution from rapid prototyping to mass production without the need to create new hardware modules for each step.
 
 - In the development phase, WisBlock modularity allows you to test different microcontrollers, sensors, communication technology, IO options by changing modules with the simple plug-in modules.
 - WisBlock industrial-grade modules can be used in mass production without the need to redesign the prototypes.
