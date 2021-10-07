@@ -38,9 +38,9 @@ static lmh_callback_t g_lora_callbacks = {BoardGetBatteryLevel, BoardGetUniqueId
                                         lorawan_rx_handler, lorawan_has_joined_handler, lorawan_confirm_class_handler, lorawan_join_failed_handler
                                        };
 //OTAA keys !!!! KEYS ARE MSB !!!!
-uint8_t nodeDeviceEUI[8] = {0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x33, 0x33};
+uint8_t nodeDeviceEUI[8] = {0x08,0x80,0x88,0x08,0x80,0x01,0x00,0x10};
 uint8_t nodeAppEUI[8] = {0xB8, 0x27, 0xEB, 0xFF, 0xFE, 0x39, 0x00, 0x00};
-uint8_t nodeAppKey[16] = {0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88};
+uint8_t nodeAppKey[16] = {0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x20,0x21,0x22,0x23,0x24,0x25,0x26};
 
 // ABP keys
 uint32_t nodeDevAddr = 0x260116F8;
@@ -49,7 +49,7 @@ uint8_t nodeAppsKey[16] = {0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50,
 
 // Private defination
 #define LORAWAN_APP_DATA_BUFF_SIZE 64                     /**< buffer size of the data to be transmitted. */
-#define LORAWAN_APP_INTERVAL 20000                        /**< Defines for user timer, the application data transmission interval. 20s, value in [ms]. */
+#define LORAWAN_APP_INTERVAL 8000                        /**< Defines for user timer, the application data transmission interval. 20s, value in [ms]. */
 static uint8_t m_lora_app_data_buffer[LORAWAN_APP_DATA_BUFF_SIZE];            //< Lora user application data buffer.
 static lmh_app_data_t m_lora_app_data = {m_lora_app_data_buffer, 0, 0, 0, 0}; //< Lora user application data structure.
 
@@ -58,11 +58,21 @@ static uint32_t timers_init(void);
 static uint32_t count = 0;
 static uint32_t count_fail = 0;
 
+//Heart rate define
+
+int32_t spo2; //SPO2 value
+int8_t validSPO2; //indicator to show if the SPO2 calculation is valid
+int32_t heartRate; //heart rate value
+int8_t validHeartRate; //indicator to show if the heart rate calculation is valid
+
+
+byte pulseLED = LED_GREEN; //Must be on PWM pin
+byte readLED = LED_BLUE; //Blinks with each data read
+
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
-
 
   // Initialize Serial for debug output
   time_t timeout = millis();
@@ -78,9 +88,6 @@ void setup()
       break;
     }
   }
-  // Initialize LoRa chip.
-  lora_rak11300_init();
-  
   Serial.println("=====================================");
   Serial.println("Welcome to RAK11300 LoRaWan!!!");
   if (doOTAA)
@@ -102,24 +109,24 @@ void setup()
       break;
     case LORAMAC_REGION_CN470:
       Serial.println("Region: CN470");
-    break;
+      break;
   case LORAMAC_REGION_CN779:
     Serial.println("Region: CN779");
     break;
-  case LORAMAC_REGION_EU433:
-    Serial.println("Region: EU433");
-    break;
-  case LORAMAC_REGION_IN865:
-    Serial.println("Region: IN865");
-    break;
-  case LORAMAC_REGION_EU868:
-    Serial.println("Region: EU868");
-    break;
-  case LORAMAC_REGION_KR920:
-    Serial.println("Region: KR920");
-    break;
-  case LORAMAC_REGION_US915:
-    Serial.println("Region: US915");
+    case LORAMAC_REGION_EU433:
+      Serial.println("Region: EU433");
+      break;
+    case LORAMAC_REGION_IN865:
+      Serial.println("Region: IN865");
+      break;
+    case LORAMAC_REGION_EU868:
+      Serial.println("Region: EU868");
+      break;
+    case LORAMAC_REGION_KR920:
+      Serial.println("Region: KR920");
+      break;
+    case LORAMAC_REGION_US915:
+      Serial.println("Region: US915");
     break;
   case LORAMAC_REGION_RU864:
     Serial.println("Region: RU864");
@@ -132,10 +139,14 @@ void setup()
     break;
   case LORAMAC_REGION_AS923_4:
     Serial.println("Region: AS923-4");
-    break;
+      break;
   }
   Serial.println("=====================================");
   
+  // Initialize LoRa chip.
+  lora_rak11300_init();
+
+  max30105_init();
   //creat a user timer to send data to server period
   uint32_t err_code;
   err_code = timers_init();
@@ -175,20 +186,14 @@ void loop()
 {
   // Put your application tasks here, like reading of sensors,
   // Controlling actuators and/or other functions. 
+  max30105_measure();
 }
 
 /**@brief LoRa function for handling HasJoined event.
  */
 void lorawan_has_joined_handler(void)
 {
-  if(doOTAA == true)
-  {
-    Serial.println("OTAA Mode, Network Joined!");
-  }
-  else
-  {
-    Serial.println("ABP Mode");
-  }
+  Serial.println("OTAA Mode, Network Joined!");
 
   lmh_error_status ret = lmh_class_request(g_CurrentClass);
   if (ret == LMH_SUCCESS)
@@ -236,12 +241,8 @@ void send_lora_frame(void)
   uint32_t i = 0;
   memset(m_lora_app_data.buffer, 0, LORAWAN_APP_DATA_BUFF_SIZE);
   m_lora_app_data.port = gAppPort;
-  m_lora_app_data.buffer[i++] = 'H';
-  m_lora_app_data.buffer[i++] = 'e';
-  m_lora_app_data.buffer[i++] = 'l';
-  m_lora_app_data.buffer[i++] = 'l';
-  m_lora_app_data.buffer[i++] = 'o';
-  m_lora_app_data.buffer[i++] = '!';
+  m_lora_app_data.buffer[i++] = heartRate;
+  m_lora_app_data.buffer[i++] = spo2;
   m_lora_app_data.buffsize = i;
 
   lmh_error_status error = lmh_send(&m_lora_app_data, g_CurrentConfirm);
@@ -263,8 +264,15 @@ void tx_lora_periodic_handler(void)
 {
   TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
   TimerStart(&appTimer);
-  Serial.println("Sending frame now...");
-  send_lora_frame();
+  if(validHeartRate == 1 && validSPO2 == 1)
+  {
+    Serial.println("Sending frame now...");
+    send_lora_frame();
+  }
+  else
+  {
+    Serial.println("No data!!");
+  }
 }
 
 /**@brief Function for the Timer initialization.
