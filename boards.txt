@@ -1,3 +1,5 @@
+menu.split=Flash split
+
 WisCoreRAK11300Board.name=WisBlock RAK11300 Board
 WisCoreRAK11300Board.build.core=arduino
 WisCoreRAK11300Board.build.crossprefix=arm-none-eabi-

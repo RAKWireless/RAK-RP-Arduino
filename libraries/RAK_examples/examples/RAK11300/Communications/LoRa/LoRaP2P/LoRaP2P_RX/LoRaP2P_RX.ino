@@ -6,28 +6,34 @@
  * @date 2020-08-21
  * 
  * @copyright Copyright (c) 2020
- *
+ * 
+ * @note RAK4631 GPIO mapping to nRF52840 GPIO ports
+   RAK4631    <->  nRF52840
+   WB_IO1     <->  P0.17 (GPIO 17)
+   WB_IO2     <->  P1.02 (GPIO 34)
+   WB_IO3     <->  P0.21 (GPIO 21)
+   WB_IO4     <->  P0.04 (GPIO 4)
+   WB_IO5     <->  P0.09 (GPIO 9)
+   WB_IO6     <->  P0.10 (GPIO 10)
+   WB_SW1     <->  P0.01 (GPIO 1)
+   WB_A0      <->  P0.04/AIN2 (AnalogIn A2)
+   WB_A1      <->  P0.31/AIN7 (AnalogIn A7)
  */
 #include <Arduino.h>
-#include "LoRaWan-Arduino.h" //http://librarymanager/All#SX126x
+#include <SX126x-Arduino.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
-
-#include <stdio.h>
-
-#include "mbed.h"
-#include "rtos.h"
-
-using namespace std::chrono_literals;
-using namespace std::chrono;
 
 // Function declarations
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr);
 void OnRxTimeout(void);
 void OnRxError(void);
 
+#ifdef NRF52_SERIES
+#define LED_BUILTIN 35
+#endif
 
 // Define LoRa parameters
-#define RF_FREQUENCY 868300000	// Hz
+#define RF_FREQUENCY 916000000	// Hz
 #define TX_OUTPUT_POWER 22		// dBm
 #define LORA_BANDWIDTH 0		// [0: 125 kHz, 1: 250 kHz, 2: 500 kHz, 3: Reserved]
 #define LORA_SPREADING_FACTOR 7 // [SF7..SF12]
@@ -45,6 +51,7 @@ static uint8_t RcvBuffer[64];
 
 void setup()
 {
+
 	// Initialize Serial for debug output
 	time_t timeout = millis();
 	Serial.begin(115200);
@@ -52,18 +59,22 @@ void setup()
 	{
 		if ((millis() - timeout) < 5000)
 		{
-            delay(100);
-        }
-        else
-        {
-            break;
-        }
+			delay(100);
+		}
+		else
+		{
+			break;
+		}
 	}
-    // Initialize LoRa chip.
-    lora_rak11300_init();
 	Serial.println("=====================================");
 	Serial.println("LoRaP2P Rx Test");
 	Serial.println("=====================================");
+
+	// Initialize LoRa chip.
+	if (lora_rak11300_init() != 0)
+	{
+		Serial.println("lora_rak11300_init failed!");
+	}
 
 	// Initialize the Radio callbacks
 	RadioEvents.TxDone = NULL;
@@ -92,9 +103,9 @@ void setup()
 
 void loop()
 {
- // Put your application tasks here, like reading of sensors,
-  // Controlling actuators and/or other functions. 
-
+	// Put your application tasks here, like reading of sensors,
+	// Controlling actuators and/or other functions.
+	yield();
 }
 
 /**@brief Function to be executed on Radio Rx Done event

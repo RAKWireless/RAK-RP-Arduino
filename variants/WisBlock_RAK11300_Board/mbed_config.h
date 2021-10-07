@@ -30,6 +30,7 @@
 #define MBED_CONF_ATMEL_RF_LOW_SPI_SPEED                                  3750000                                                                                          // set by library:atmel-rf
 #define MBED_CONF_ATMEL_RF_PROVIDE_DEFAULT                                0                                                                                                // set by library:atmel-rf
 #define MBED_CONF_ATMEL_RF_USE_SPI_SPACING_API                            0                                                                                                // set by library:atmel-rf
+#define MBED_CONF_CELLULAR_AT_HANDLER_BUFFER_SIZE                         32                                                                                               // set by library:cellular
 #define MBED_CONF_CELLULAR_CONTROL_PLANE_OPT                              0                                                                                                // set by library:cellular
 #define MBED_CONF_CELLULAR_DEBUG_AT                                       0                                                                                                // set by library:cellular
 #define MBED_CONF_CELLULAR_MAX_CP_DATA_RECV_LEN                           1358                                                                                             // set by library:cellular
@@ -98,6 +99,8 @@
 #define MBED_CONF_FAT_CHAN_FF_NORTC_MDAY                                  1                                                                                                // set by library:fat_chan
 #define MBED_CONF_FAT_CHAN_FF_NORTC_MON                                   1                                                                                                // set by library:fat_chan
 #define MBED_CONF_FAT_CHAN_FF_NORTC_YEAR                                  2017                                                                                             // set by library:fat_chan
+#define MBED_CONF_FAT_CHAN_FF_PRINT_FLOAT                                 0                                                                                                // set by library:fat_chan
+#define MBED_CONF_FAT_CHAN_FF_PRINT_LLI                                   0                                                                                                // set by library:fat_chan
 #define MBED_CONF_FAT_CHAN_FF_SFN_BUF                                     12                                                                                               // set by library:fat_chan
 #define MBED_CONF_FAT_CHAN_FF_STRF_ENCODE                                 3                                                                                                // set by library:fat_chan
 #define MBED_CONF_FAT_CHAN_FF_STR_VOLUME_ID                               0                                                                                                // set by library:fat_chan
@@ -227,6 +230,7 @@
 #define MBED_CONF_PPP_MBED_EVENT_QUEUE                                    0                                                                                                // set by library:ppp
 #define MBED_CONF_PPP_THREAD_STACKSIZE                                    816                                                                                              // set by library:ppp
 #define MBED_CONF_RTOS_API_PRESENT                                        1                                                                                                // set by library:rtos-api
+#define MBED_CONF_RTOS_ENABLE_ALL_RTX_EVENTS                              0                                                                                                // set by library:rtos
 #define MBED_CONF_RTOS_EVFLAGS_NUM                                        0                                                                                                // set by library:rtos
 #define MBED_CONF_RTOS_IDLE_THREAD_STACK_SIZE                             512                                                                                              // set by library:rtos
 #define MBED_CONF_RTOS_IDLE_THREAD_STACK_SIZE_DEBUG_EXTRA                 0                                                                                                // set by library:rtos

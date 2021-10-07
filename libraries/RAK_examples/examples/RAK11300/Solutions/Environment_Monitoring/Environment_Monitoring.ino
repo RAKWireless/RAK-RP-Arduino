@@ -9,16 +9,8 @@
 **/
 
 #include <Arduino.h>
-#include "LoRaWan-Arduino.h" //http://librarymanager/All#SX126x
+#include <LoRaWan-RAK4630.h> // Click to install library: http://librarymanager/ALL#SX126x-Arduino
 #include <SPI.h>
-
-#include <stdio.h>
-
-#include "mbed.h"
-#include "rtos.h"
-
-using namespace std::chrono_literals;
-using namespace std::chrono;
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -28,17 +20,25 @@ using namespace std::chrono;
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 Adafruit_BME680 bme;
 
+// RAK4630 supply two LED
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 35
+#endif
+
+#ifndef LED_BUILTIN2
+#define LED_BUILTIN2 36
+#endif
 
 bool doOTAA = true;   // OTAA is used by default.
 #define SCHED_MAX_EVENT_DATA_SIZE APP_TIMER_SCHED_EVENT_DATA_SIZE /**< Maximum size of scheduler events. */
 #define SCHED_QUEUE_SIZE 60										  /**< Maximum number of events in the scheduler queue. */
 #define LORAWAN_DATERATE DR_3									  /*LoRaMac datarates definition, from DR_0 to DR_5*/
-#define LORAWAN_TX_POWER TX_POWER_0							/*LoRaMac tx power definition, from TX_POWER_0 to TX_POWER_15*/
+#define LORAWAN_TX_POWER TX_POWER_0								  /*LoRaMac tx power definition, from TX_POWER_0 to TX_POWER_15*/
 #define JOINREQ_NBTRIALS 5										  /**< Number of trials for the join request. */
 DeviceClass_t g_CurrentClass = CLASS_A;					/* class definition*/
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;    /* Region:EU868*/
-lmh_confirm g_CurrentConfirm = LMH_UNCONFIRMED_MSG;				  /* confirm/unconfirm packet definition*/
-uint8_t gAppPort = LORAWAN_APP_PORT;							        /* data port*/
+lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;				  /* confirm/unconfirm packet definition*/
+uint8_t gAppPort = LORAWAN_APP_PORT;							  /* data port*/
 
 /**@brief Structure containing LoRaWan parameters, needed for lmh_init()
 */
@@ -103,60 +103,45 @@ void setup()
   }
 
   Serial.println("=====================================");
-  Serial.println("Welcome to RAK11300 LoRaWan!!!");
+  Serial.println("Welcome to RAK4630 LoRaWan!!!");
   if (doOTAA)
   {
-    Serial.println("Type: OTAA");
+  Serial.println("Type: OTAA");
   }
   else
   {
     Serial.println("Type: ABP");
   }
 
-switch (g_CurrentRegion)
+  switch (g_CurrentRegion)
   {
     case LORAMAC_REGION_AS923:
-      Serial.println("Region: AS923");
+  Serial.println("Region: AS923");
       break;
     case LORAMAC_REGION_AU915:
-      Serial.println("Region: AU915");
+  Serial.println("Region: AU915");
       break;
     case LORAMAC_REGION_CN470:
-      Serial.println("Region: CN470");
-    break;
-  case LORAMAC_REGION_CN779:
-    Serial.println("Region: CN779");
-    break;
-  case LORAMAC_REGION_EU433:
-    Serial.println("Region: EU433");
-    break;
-  case LORAMAC_REGION_IN865:
-    Serial.println("Region: IN865");
-    break;
-  case LORAMAC_REGION_EU868:
-    Serial.println("Region: EU868");
-    break;
-  case LORAMAC_REGION_KR920:
-    Serial.println("Region: KR920");
-    break;
-  case LORAMAC_REGION_US915:
-    Serial.println("Region: US915");
-    break;
-  case LORAMAC_REGION_RU864:
-    Serial.println("Region: RU864");
-    break;
-  case LORAMAC_REGION_AS923_2:
-    Serial.println("Region: AS923-2");
-    break;
-  case LORAMAC_REGION_AS923_3:
-    Serial.println("Region: AS923-3");
-    break;
-  case LORAMAC_REGION_AS923_4:
-    Serial.println("Region: AS923-4");
-    break;
+  Serial.println("Region: CN470");
+      break;
+    case LORAMAC_REGION_EU433:
+  Serial.println("Region: EU433");
+      break;
+    case LORAMAC_REGION_IN865:
+  Serial.println("Region: IN865");
+      break;
+    case LORAMAC_REGION_EU868:
+  Serial.println("Region: EU868");
+      break;
+    case LORAMAC_REGION_KR920:
+  Serial.println("Region: KR920");
+      break;
+    case LORAMAC_REGION_US915:
+  Serial.println("Region: US915");
+      break;
   }
   Serial.println("=====================================");
-  
+
   // Initialize LoRa chip.
   lora_rak11300_init();
 
@@ -172,15 +157,15 @@ switch (g_CurrentRegion)
   if (err_code != 0)
   {
     Serial.printf("timers_init failed - %d\n", err_code);
-    return;
+	  return;
   }
 
   // Setup the EUIs and Keys
   if (doOTAA)
   {
-    lmh_setDevEui(nodeDeviceEUI);
-    lmh_setAppEui(nodeAppEUI);
-    lmh_setAppKey(nodeAppKey);
+  lmh_setDevEui(nodeDeviceEUI);
+  lmh_setAppEui(nodeAppEUI);
+  lmh_setAppKey(nodeAppKey);
   }
   else
   {
@@ -194,7 +179,7 @@ switch (g_CurrentRegion)
   if (err_code != 0)
   {
     Serial.printf("lmh_init failed - %d\n", err_code);
-    return;
+	return;
   }
 
   // Start Join procedure
@@ -224,14 +209,7 @@ void lorawan_join_fail(void)
 */
 void lorawan_has_joined_handler(void)
 {
-  if(doOTAA == true)
-  {
-    Serial.println("OTAA Mode, Network Joined!");
-  }
-  else
-  {
-    Serial.println("ABP Mode");
-  }
+  Serial.println("OTAA Mode, Network Joined!");
   u8g2.clearBuffer();					// clear the internal memory
   u8g2.setFont(u8g2_font_ncenB10_tr); // choose a suitable font
 
@@ -260,10 +238,10 @@ void lorawan_rx_handler(lmh_app_data_t *app_data)
 void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
   Serial.printf("switch to class %c done\n", "ABC"[Class]);
-  // Informs the server that switch has occurred ASAP
-  m_lora_app_data.buffsize = 0;
-  m_lora_app_data.port = gAppPort;
-  lmh_send(&m_lora_app_data, g_CurrentConfirm);
+	// Informs the server that switch has occurred ASAP
+	m_lora_app_data.buffsize = 0;
+	m_lora_app_data.port = gAppPort;
+	lmh_send(&m_lora_app_data, g_CurrentConfirm);
 }
 
 void send_lora_frame(void)

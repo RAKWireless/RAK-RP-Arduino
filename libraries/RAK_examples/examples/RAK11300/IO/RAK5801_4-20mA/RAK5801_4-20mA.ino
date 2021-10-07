@@ -48,9 +48,9 @@ void loop()
 	{
 		mcu_ain_raw += analogRead(WB_A1);				// select the input pin A1 for the potentiometer
 	}
-	average_raw = mcu_ain_raw / NO_OF_SAMPLES;
+	average_raw = mcu_ain_raw / i;
 
-	voltage_ain = average_raw * 3.3 / 4095; 		//raef 3.3v / 12bit ADC
+	voltage_ain = average_raw * 3.6 / 1024; 		//raef 3.6v / 10bit ADC
 
 	current_sensor = voltage_ain / 149.9 * 1000; 	//WisBlock RAK5801 (0 ~ 20mA) I=U/149.9*1000 (mA)
 
@@ -60,9 +60,13 @@ void loop()
 	 */
 	pressure = (current_sensor - 3.95) * 100 * 2.5;
 
-	Serial.printf("-------average_value------ = %d\n", average_raw);
-	Serial.printf("-------current_sensor------ = %f\n", current_sensor);
-	Serial.printf("-------pressure------ = %d KPa\n", pressure);
+	Serial.print("-------average_value------ = ");
+	Serial.println(voltage_ain);
+	Serial.print("-------current_sensor------ = ");
+	Serial.println(current_sensor);
+	Serial.print("-------pressure------ = ");
+	Serial.print(pressure);
+	Serial.println(" KPa");
 
 	delay(2000);
 }

@@ -9,13 +9,8 @@
  
 #include <ArduinoRS485.h> //Click here to get the library: http://librarymanager/All#ArduinoRS485
 
-#define RS485_TX_PIN 0
-#define RS485_DE_PIN 6
-#define RS485_RE_PIN 1
-
 void setup()
 {
-
 	// Initialize Serial for debug output
 	time_t timeout = millis();
 	Serial.begin(115200);
@@ -31,7 +26,7 @@ void setup()
 		}
 	}
 	
-  RS485.setPins(RS485_TX_PIN, RS485_DE_PIN, RS485_RE_PIN);
+
 	RS485.begin(9600);
 }
 
@@ -53,6 +48,6 @@ void loop()
 	digitalWrite(WB_IO2, LOW);
 	delay(300);
 	/* IO2 LOW  3V3_S OFF */
-  Serial.println("uart is ok");
+
 	delay(1000);
 }

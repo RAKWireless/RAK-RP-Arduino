@@ -3,6 +3,7 @@
 #include "Arduino.h"
 #include "PDM.h"
 #include "OpenPDMFilter.h"
+#include "mbed_interface.h"
 
 extern "C" {
 #include "hardware/pio.h"
@@ -18,6 +19,9 @@ extern "C" {
 uint dmaChannel = 0;
 PIO pio = pio0;
 uint sm = 0;
+
+// PIO program offset
+static uint offset;
 
 // raw buffers contain PDM data
 #define RAW_BUFFER_SIZE 512 // should be a multiple of (decimation / 8)
@@ -69,6 +73,18 @@ int PDMClass::begin(int channels, int sampleRate)
   int finalBufferLength = _doubleBuffer.availableForWrite() / sizeof(int16_t);
   _doubleBuffer.swap(0);
 
+  // The mic accepts an input clock from 1.2 to 3.25 Mhz
+  // Setup the decimation factor accordingly
+  if ((sampleRate * decimation * 2) > 3250000) {
+    decimation = 64;
+  }
+
+  // Sanity check, abort if still over 3.25Mhz
+  if ((sampleRate * decimation * 2) > 3250000) {
+    mbed_error_printf("Sample rate too high, the mic would glitch\n");
+    mbed_die();
+  }
+
   int rawBufferLength = RAW_BUFFER_SIZE / (decimation / 8);
   // Saturate number of samples. Remaining bytes are dropped.
   if (rawBufferLength > finalBufferLength) {
@@ -92,8 +108,13 @@ int PDMClass::begin(int channels, int sampleRate)
 
   // Configure PIO state machine
   float clkDiv = (float)clock_get_hz(clk_sys) / sampleRate / decimation / 2; 
-  uint offset = pio_add_program(pio, &pdm_pio_program);
+  if(pio_can_add_program(pio, &pdm_pio_program)) {
+    offset = pio_add_program(pio, &pdm_pio_program);
   pdm_pio_program_init(pio, sm, offset, _clkPin, _dinPin, clkDiv);
+  } else {
+    mbed_error_printf("Cannot load pio program\n");
+    mbed_die();
+  }
 
   // Wait for microphone 
   delay(100);
@@ -126,8 +147,12 @@ int PDMClass::begin(int channels, int sampleRate)
 
 void PDMClass::end()
 {
+  pio_remove_program(pio, &pdm_pio_program, offset);
   dma_channel_abort(dmaChannel);
   pinMode(_clkPin, INPUT);
+  decimation = 128;
+  rawBufferIndex = 0;
+  offset = 0;
 }
 
 int PDMClass::available()
@@ -181,7 +206,11 @@ void PDMClass::IrqHandler(bool halftranfer)
   }
 
   // fill final buffer with PCM samples
+  if (filter.Decimation == 128) {
   Open_PDM_Filter_128(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+  } else {
+    Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+  }
 
   if (cutSamples) {
     memset(finalBuffer, 0, cutSamples);
