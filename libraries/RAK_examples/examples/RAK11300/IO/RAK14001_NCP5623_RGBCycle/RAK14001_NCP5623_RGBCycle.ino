@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <NCP5623.h>
+#include <NCP5623.h>	//http://librarymanager/All#NCP5623 By：RAKWireless
 
 NCP5623 rgb;
 
@@ -35,7 +35,7 @@ void setup() {
   }
 
   // set the current output level max, the range is 1 to 31
-  rgb.setCurrent(26);
+  rgb.setCurrent(10);
 }
 
 void breathingLamp(bool Red, bool Green, bool Blue)

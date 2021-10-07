@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2021
  */
 #include <Wire.h>
-#include "ADC121C021.h"
+#include "ADC121C021.h"     // Click to install library: http://librarymanager/All#MQx
 #include <U8g2lib.h>       // Click to install library: http://librarymanager/All#u8g2
 
 #define EN_PIN        WB_IO6  //Logic high enables the device. Logic low disables the device
@@ -80,7 +80,7 @@ void setup()
   {   
     calcR0 += MQ2.calibrateR0(RatioMQ2CleanAir);    
   }
-  MQ2.setR0(calcR0/10);
+  MQ2.setR0(calcR0/100);
   if(isinf(calcR0)) {Serial.println("Warning: Conection issue founded, R0 is infite (Open circuit detected) please check your wiring and supply"); while(1);}
   if(calcR0 == 0){Serial.println("Warning: Conection issue founded, R0 is zero (Analog pin with short circuit to ground) please check your wiring and supply"); while(1);}
 
