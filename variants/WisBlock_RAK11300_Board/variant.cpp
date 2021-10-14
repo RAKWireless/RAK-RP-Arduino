@@ -65,18 +65,6 @@ extern "C"
 
 #ifdef SERIAL_CDC
 
-static void utox8(uint32_t val, uint8_t *s)
-{
-	for (int i = 0; i < 16; i = i + 2)
-	{
-		int d = val & 0XF;
-		val = (val >> 4);
-
-		s[15 - i - 1] = d > 9 ? 'A' + d - 10 : '0' + d;
-		s[15 - i] = '\0';
-	}
-}
-
 void _ontouch1200bps_()
 {
 	reset_usb_boot(1 << digitalPinToPinName(LED_BUILTIN), 0);
@@ -98,6 +86,7 @@ void eraseDataFlash(void)
 	flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
 	restore_interrupts(ints);
 }
+
 void writeDataToFlash(uint8_t *data)
 {
 	uint32_t ints = save_and_disable_interrupts();
@@ -108,6 +97,18 @@ void writeDataToFlash(uint8_t *data)
 void getUniqueDeviceID(uint8_t *id)
 {
 	flash_get_unique_id((uint8_t *)&id[0]);
+}
+
+static void utox8(uint32_t val, uint8_t *s)
+{
+	for (int i = 0; i < 16; i = i + 2)
+	{
+		int d = val & 0XF;
+		val = (val >> 4);
+
+		s[15 - i - 1] = d > 9 ? 'A' + d - 10 : '0' + d;
+		s[15 - i] = '\0';
+	}
 }
 
 uint8_t getUniqueSerialNumber(uint8_t *name)
