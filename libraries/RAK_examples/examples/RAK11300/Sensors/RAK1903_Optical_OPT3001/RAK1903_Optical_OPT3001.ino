@@ -52,7 +52,7 @@ void configureSensor()
 
     Serial.print("Latch field (R/W):");
     Serial.println(sensorConfig.Latch, HEX);
-  
+
     Serial.print("Mask exponent field (R/W):");
     Serial.println(sensorConfig.MaskExponent, HEX);
 

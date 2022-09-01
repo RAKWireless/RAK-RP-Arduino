@@ -24,13 +24,20 @@
 
 #include "utility/PDMDoubleBuffer.h"
 
+typedef enum Channel_Mode
+{
+  left,
+  right,
+  stereo
+};
+
 class PDMClass
 {
 public:
   PDMClass(int dinPin, int clkPin, int pwrPin);
   virtual ~PDMClass();
 
-  int begin(int channels, int sampleRate);
+  int begin(Channel_Mode channels, int sampleRate);
   void end();
 
   virtual int available();
@@ -64,5 +71,4 @@ private:
 };
 
 extern PDMClass PDM;
-
 #endif

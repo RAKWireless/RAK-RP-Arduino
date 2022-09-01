@@ -14,11 +14,11 @@ void setup(void)
 {
   pinMode(WB_IO2, OUTPUT);
   digitalWrite(WB_IO2, HIGH);
-  time_t timeout = millis();
-  Serial.begin(115200);
-  while (!Serial)
-  {
-    if ((millis() - timeout) < 5000)
+	time_t timeout = millis();
+	Serial.begin(115200);
+	while (!Serial)
+	{
+		if ((millis() - timeout) < 5000)
         {
             delay(100);
         }
@@ -26,7 +26,7 @@ void setup(void)
         {
             break;
         }
-  }
+	}
     Wire.begin();
     if (!tcs.attach(Wire))
         Serial.println("ERROR: TCS34725 NOT FOUND !!!");
@@ -38,14 +38,14 @@ void setup(void)
 }
 
 void loop(void)
-{
+		{
     if (tcs.available()) // if current measurement has done
-    {
+		{
         TCS34725::Color color = tcs.color();
         Serial.print("Color Temp : "); Serial.println(tcs.colorTemperature());
         Serial.print("Lux        : "); Serial.println(tcs.lux());
         Serial.print("R          : "); Serial.println(color.r);
         Serial.print("G          : "); Serial.println(color.g);
         Serial.print("B          : "); Serial.println(color.b);
-    }
+}
 }

@@ -27,7 +27,7 @@ void setup()
   delay(10);
   digitalWrite(WB_IO4, 1);
   delay(10);
-    
+  
   mcp.begin(IIC_ADDRESS,&Wire); // use default address 0.
   
   for(int i=0 ;i < 16 ;i++)
